@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Date.Models.Entities.Log;
+using Microsoft.EntityFrameworkCore;
 
 namespace Database.HotContext
 {
@@ -11,5 +12,7 @@ namespace Database.HotContext
         {
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<LogEntity> LogTable { get; set; }
     }
 }
