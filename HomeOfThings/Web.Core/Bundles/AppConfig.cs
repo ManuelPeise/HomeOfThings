@@ -1,8 +1,10 @@
-﻿using Data.Interfaces.Interfaces.Repositories.Administration;
+﻿using Data.Interfaces.Interfaces.Clients;
+using Data.Interfaces.Interfaces.Repositories.Administration;
 using Data.Interfaces.Interfaces.Repositories.User;
 using Data.Interfaces.UnitsOfWork;
 using Database.HotContext;
 using Logic.Administration;
+using Logic.Shared.Clients;
 using Logic.Shared.Repositories;
 using Logic.Shared.UnitsOfWork;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -47,6 +49,11 @@ namespace Web.Core.Bundles
             services.AddScoped<IUserAdministrationRepository, UserAdministartionRepository>();
             services.AddScoped<IUserAdministrationService, UserAdministrationService>();
             services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
+        }
+
+        internal static void ConfigureClients(IServiceCollection services)
+        {
+            services.AddScoped<IEmailClient, EmailClient>();
         }
     }
 }

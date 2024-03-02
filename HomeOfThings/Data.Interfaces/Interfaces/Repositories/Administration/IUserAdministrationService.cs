@@ -11,5 +11,6 @@ namespace Data.Interfaces.Interfaces.Repositories.Administration
         Task<UserExportModel?> GetUserById(int userId, IHttpContextAccessor contextAccessor);
         Task<bool> RegisterUser(UserRegistrationImportModel registrationModel, IHttpContextAccessor contextAccessor);
         Task<bool> ChangeActiveState(int userId, bool isActive, IHttpContextAccessor contextAccessor);
+        Task ActivateUserPerMail(string email, IHttpContextAccessor contextAccessor);
     }
 }

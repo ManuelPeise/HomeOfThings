@@ -1,5 +1,7 @@
-﻿using Data.Interfaces.Interfaces.Repositories.Administration;
+﻿using Data.Interfaces.Interfaces.Clients;
+using Data.Interfaces.Interfaces.Repositories.Administration;
 using Data.Interfaces.Interfaces.Repositories.User;
+using Data.Ressources;
 using Database.HotContext;
 using Date.Models.Entities.Log;
 using Date.Models.Models.User.Export;
@@ -7,17 +9,26 @@ using Date.Models.Models.User.Import;
 using Logic.Shared;
 using Logic.Shared.Extensions.User;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Logic.Administration
 {
     public class UserAdministrationService : ALogicBase, IUserAdministrationService
     {
         private readonly IUserAdministrationRepository _userAdministationRepository;
+        private readonly IConfiguration _config;
+        private readonly IEmailClient _emailClient;
         private bool disposedValue;
 
-        public UserAdministrationService(DatabaseContext context, IUserAdministrationRepository userAdministationRepository) : base(context)
+        public UserAdministrationService(
+            DatabaseContext context, 
+            IUserAdministrationRepository userAdministationRepository, 
+            IConfiguration config, 
+            IEmailClient emailClient) : base(context)
         {
             _userAdministationRepository = userAdministationRepository;
+            _config = config;
+            _emailClient = emailClient;
         }
 
         public async Task<List<UserExportModel>> GetAllUsers(IHttpContextAccessor contextAccessor)
@@ -118,7 +129,22 @@ namespace Logic.Administration
         {
             try
             {
-                return await _userAdministationRepository.RegisterUserAsync(registrationModel.ToEntity());
+                var succes = await _userAdministationRepository.RegisterUserAsync(registrationModel.ToEntity());
+
+                var emailHtml = await _emailClient.LoadMailHtmlFromRessources(RessourceNames.RegistrationMailBody);
+
+                if(!string.IsNullOrWhiteSpace(emailHtml))
+                {
+                    var targetUrl = $"{_config["apiBaseUrl"]}/UserRegistration/ActivateUserPerMail/{registrationModel.Email}";
+
+                    emailHtml = emailHtml.Replace("targetUrl", targetUrl);
+                }
+
+                var message = _emailClient.BuilMailMessage(registrationModel.Email, "Confirm your account!", emailHtml);
+
+                await _emailClient.SendMail(message);
+
+                return succes;
                 
             }
             catch (Exception exception)
@@ -137,6 +163,27 @@ namespace Logic.Administration
                 await Save(contextAccessor.HttpContext);
 
                 return false;
+            }
+        }
+
+        public async Task ActivateUserPerMail(string email, IHttpContextAccessor contextAccessor)
+        {
+            try
+            {
+                var user = await _userAdministationRepository.GetUserByEmailAsync(email);
+
+                if (user == null) return;
+
+                user.EmailConfirmed = true;
+                user.IsActive = true;
+
+                _userAdministationRepository.UpdateUser(user);
+
+                await Save(contextAccessor.HttpContext);
+            }
+            catch (Exception)
+            {
+
             }
         }
 

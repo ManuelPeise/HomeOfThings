@@ -39,6 +39,14 @@ namespace Logic.Shared.Repositories
             return await _userRepositoryBase.InsertIfNotExists(user, x => x.Email.ToLower().Equals(user.Email.ToLower()));
         }
         
+        public void UpdateUser(UserEntity user)
+        {
+            if (user != null)
+            {
+                _userRepositoryBase.Update(user);
+            }
+        }
+
         public async Task<bool> ChangeUserActiveStateAsync(int id, bool isActive)
         {
             var user = await _userRepositoryBase.GetFirstOrDefaultAsync(x => x.Id == id);

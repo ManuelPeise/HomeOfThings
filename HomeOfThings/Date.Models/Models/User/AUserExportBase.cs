@@ -10,6 +10,7 @@ namespace Date.Models.Models.User
         public DateTime DateOfBirth { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = string.Empty;
+        public bool EmailConfirmed { get; set; }
         public bool IsActive { get; set; }
     }
 }

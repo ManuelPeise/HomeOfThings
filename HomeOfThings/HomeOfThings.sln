@@ -31,15 +31,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.App", "Web.App\Web.App.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.NativeApp", "Web.NativeApp\Web.NativeApp.csproj", "{E00EC7B2-75E4-48FD-BC5B-AC0BD28CDC35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Administration", "Logic.Administration\Logic.Administration.csproj", "{00CBFFA8-1C8E-4AFB-8E84-2621E7A8B1C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Administration", "Logic.Administration\Logic.Administration.csproj", "{00CBFFA8-1C8E-4AFB-8E84-2621E7A8B1C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Administration", "Service.Administration\Service.Administration.csproj", "{A44CBA3E-3920-48FC-A1C9-3CAB1290F0B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Administration", "Service.Administration\Service.Administration.csproj", "{A44CBA3E-3920-48FC-A1C9-3CAB1290F0B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Shared", "Service.Shared\Service.Shared.csproj", "{5EFE6C9A-86D4-4219-A73C-984680257B97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Shared", "Service.Shared\Service.Shared.csproj", "{5EFE6C9A-86D4-4219-A73C-984680257B97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.UserService", "Logic.UserService\Logic.UserService.csproj", "{B777FAB0-86E2-4956-9B69-B797B06685BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.UserService", "Logic.UserService\Logic.UserService.csproj", "{B777FAB0-86E2-4956-9B69-B797B06685BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.UserService", "Service.UserService\Service.UserService.csproj", "{F9CC4900-6451-412C-965F-5B5AA4A9E95E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.UserService", "Service.UserService\Service.UserService.csproj", "{F9CC4900-6451-412C-965F-5B5AA4A9E95E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Ressources", "Data.Ressources\Data.Ressources.csproj", "{392A045E-DDAE-4BB2-9409-49D71358136F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +105,10 @@ Global
 		{F9CC4900-6451-412C-965F-5B5AA4A9E95E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9CC4900-6451-412C-965F-5B5AA4A9E95E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9CC4900-6451-412C-965F-5B5AA4A9E95E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{392A045E-DDAE-4BB2-9409-49D71358136F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{392A045E-DDAE-4BB2-9409-49D71358136F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{392A045E-DDAE-4BB2-9409-49D71358136F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{392A045E-DDAE-4BB2-9409-49D71358136F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +128,7 @@ Global
 		{5EFE6C9A-86D4-4219-A73C-984680257B97} = {DA4B8B45-F4EC-419B-B97A-A173AB75A3C4}
 		{B777FAB0-86E2-4956-9B69-B797B06685BD} = {3539D227-38E7-4643-8E24-064FF0F0FCD8}
 		{F9CC4900-6451-412C-965F-5B5AA4A9E95E} = {DA4B8B45-F4EC-419B-B97A-A173AB75A3C4}
+		{392A045E-DDAE-4BB2-9409-49D71358136F} = {9E16E8C0-135D-4BAB-BE60-A27EB147A682}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52E0F12C-B085-41AA-B3A7-1406DD1D74FC}

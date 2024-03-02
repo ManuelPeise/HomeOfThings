@@ -10,5 +10,6 @@ namespace Data.Interfaces.Interfaces.Repositories.User
         Task<bool> RegisterUserAsync(UserEntity user);
         Task<bool> ChangeUserActiveStateAsync(int id, bool isActive);
         Task<List<UserRoleEntity>> GetUserRoles(List<int> ids);
+        void UpdateUser(UserEntity user);
     }
 }

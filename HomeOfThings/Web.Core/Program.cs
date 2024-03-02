@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 AppConfig.ConfigureDatabaseService(builder.Services, builder.Configuration);
 AppConfig.ConfigureServices(builder.Services);
 AppConfig.ConfigureRepositories(builder.Services);
+AppConfig.ConfigureClients(builder.Services);
 
 var app = builder.Build();
 

@@ -17,6 +17,7 @@ namespace Logic.Shared.Extensions.User
             return new UserEntity
             {
                 Email = model.Email,
+                EmailConfirmed = false,
                 Password = PasswordHelper.GetEncodedPassword(model.Password, salt),
                 Salt = salt,
                 IsActive = model.IsActive,
@@ -31,6 +32,7 @@ namespace Logic.Shared.Extensions.User
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
                 Email = entity.Email,
+                EmailConfirmed = entity.EmailConfirmed,
                 IsActive = entity.IsActive,
                 DateOfBirth = entity.DateOfBirth,
                 UserRolesJson = entity.UserRolesJson,
