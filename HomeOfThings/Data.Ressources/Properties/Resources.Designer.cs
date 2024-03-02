@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ressources {
+namespace Files {
     using System;
     
     
@@ -61,17 +61,15 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;!DOCTYPE html&gt;
-        ///&lt;html&gt;
-        ///&lt;body style=&quot;display: flex; justify-content: center;&quot;&gt;
+        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;div style=&quot;display: flex; justify-content: center;&quot;&gt;
         ///    &lt;div style=&quot;display: flex; flex-direction: column&quot;&gt;
         ///        &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;
-        ///            &lt;h3 style=&quot;font-size: 1.5rem&quot;&gt;Thanks for registing your account!&lt;/h3&gt;
+        ///            &lt;h3 style=&quot;font-size: 1.2rem&quot;&gt;Thanks for registing your account!&lt;/h3&gt;
         ///        &lt;/div&gt;
         ///        &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;
-        ///            &lt;p style=&quot;font-size: 1.3rem&quot;&gt;Please confirm your email account, to complete registration.&lt;/p&gt;
+        ///            &lt;p style=&quot;font-size: 1rem&quot;&gt;Please confirm your email account, to complete registration.&lt;/p&gt;
         ///        &lt;/div&gt;
-        ///        &lt;div style=&quot;display: [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///        &lt;div style=&quot;display: flex; justify-content: cent [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string RegistrationMailBody {
             get {

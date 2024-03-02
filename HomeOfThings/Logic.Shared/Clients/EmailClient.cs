@@ -1,10 +1,10 @@
 ﻿using Data.Interfaces.Interfaces.Clients;
+using Data.Ressources;
 using Date.Models.Models.Email;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using Ressources;
 
 namespace Logic.Shared.Clients
 {
@@ -18,36 +18,27 @@ namespace Logic.Shared.Clients
 
         public async Task<string> LoadMailHtmlFromRessources(string name)
         {
-            using (var stream = Resources.ResourceManager.GetStream(name))
+            switch (name)
             {
-                if(stream != null)
-                {
-                    using(var reader = new StreamReader(stream))
-                    {
-                        var html = await reader.ReadToEndAsync();
-
-                        return html;
-                    }
-                }
+                case RessourceNames.RegistrationMailBody:
+                    return Files.Resources.RegistrationMailBody;
+                default: return string.Empty;
             }
-
-            return string.Empty;
         }
 
-        public MimeMessage BuilMailMessage(string to, string subject, string body = "",  string? htmlBody = null)
+        public MimeMessage BuilMailMessage(string to, string subject, string body = "", string? htmlBody = null)
         {
             var message = new MimeMessage();
             message.Subject = subject;
-            message.From.Add(new MailboxAddress("from", _accountConfiguration?.Email));
+            message.From.Add(new MailboxAddress($"from {_accountConfiguration?.Email}", _accountConfiguration?.Email));
             message.To.Add(new MailboxAddress("", to));
 
             if (htmlBody != null)
             {
-                
-                message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-                {
-                    Text = htmlBody
-                };
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = htmlBody;
+
+                message.Body = bodyBuilder.ToMessageBody();
             }
             else
             {
@@ -57,7 +48,7 @@ namespace Logic.Shared.Clients
                 };
             }
 
-            return message;      
+            return message;
         }
 
         public async Task SendMail(MimeMessage message)
@@ -66,9 +57,9 @@ namespace Logic.Shared.Clients
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(_accountConfiguration.SmtpServer, _accountConfiguration.SmtpPort, SecureSocketOptions.StartTls);
+                client.Connect(_accountConfiguration.SmtpServer, _accountConfiguration.SmtpPort, SecureSocketOptions.StartTls);
 
-                await client.AuthenticateAsync(_accountConfiguration.Email, _accountConfiguration.Password);
+                client.Authenticate(_accountConfiguration.Email, _accountConfiguration.Password);
 
                 if (client.IsAuthenticated)
                 {

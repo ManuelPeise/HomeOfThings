@@ -64,7 +64,7 @@ namespace Logic.Shared.Repositories
 
             var existing = await query.FirstOrDefaultAsync(expression);
 
-            if(existing == null) 
+            if(existing != null) 
             {
                 return false;
             }

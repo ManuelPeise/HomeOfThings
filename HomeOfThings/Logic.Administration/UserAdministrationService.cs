@@ -140,7 +140,7 @@ namespace Logic.Administration
                     emailHtml = emailHtml.Replace("targetUrl", targetUrl);
                 }
 
-                var message = _emailClient.BuilMailMessage(registrationModel.Email, "Confirm your account!", emailHtml);
+                var message = _emailClient.BuilMailMessage(registrationModel.Email, "Confirm your account!", "", emailHtml);
 
                 await _emailClient.SendMail(message);
 
