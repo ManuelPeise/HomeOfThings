@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data.Interfaces\Data.Interfaces.csproj" />
+    <ProjectReference Include="..\Database.HotContext\Database.HotContext.csproj" />
+    <ProjectReference Include="..\Logic.UserService\Logic.UserService.csproj" />
+    <ProjectReference Include="..\Service.Shared\Service.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
