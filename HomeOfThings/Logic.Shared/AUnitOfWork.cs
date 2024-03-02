@@ -1,26 +1,19 @@
-﻿using Data.Interfaces.Interfaces.Repositories;
-using Database.HotContext;
+﻿using Database.HotContext;
 using Date.Models.Entities;
-using Logic.Shared.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Logic.Shared
 {
-    public abstract class ALogicBase
+    public abstract class AUnitOfWork
     {
         private readonly DatabaseContext _context;
-        private ILogRepository? _logRepository;
+        public DatabaseContext Context { get => _context; }
 
-        protected ALogicBase(DatabaseContext context)
+        public AUnitOfWork(DatabaseContext context)
         {
             _context = context;
-        
-
-            _logRepository = new LogRepository(context);
         }
-
-        public ILogRepository LogRepository { get => _logRepository?? new LogRepository(_context); }
 
         public virtual async Task Save(HttpContext context)
         {

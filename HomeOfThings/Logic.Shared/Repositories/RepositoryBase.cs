@@ -11,6 +11,7 @@ namespace Logic.Shared.Repositories
     {
         private readonly DatabaseContext _context;
         private readonly DbSet<T> _db;
+        private bool disposedValue;
 
         public RepositoryBase(DatabaseContext context)
         {
@@ -93,5 +94,28 @@ namespace Logic.Shared.Repositories
         {
             _db.RemoveRange(entities);
         }
+
+        #region dispose
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(bool disposing)" ein.
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }

@@ -25,7 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Data.Interfaces\Data.Interfaces.csproj" />
     <ProjectReference Include="..\Database.HotContext\Database.HotContext.csproj" />
+    <ProjectReference Include="..\Logic.Administration\Logic.Administration.csproj" />
+    <ProjectReference Include="..\Logic.Shared\Logic.Shared.csproj" />
+    <ProjectReference Include="..\Service.Administration\Service.Administration.csproj" />
+    <ProjectReference Include="..\Service.UserService\Service.UserService.csproj" />
   </ItemGroup>
 
 </Project>

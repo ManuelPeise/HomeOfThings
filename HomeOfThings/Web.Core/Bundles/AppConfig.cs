@@ -1,4 +1,11 @@
-﻿using Database.HotContext;
+﻿using Data.Interfaces.Interfaces.Repositories.Administration;
+using Data.Interfaces.Interfaces.Repositories.User;
+using Data.Interfaces.UnitsOfWork;
+using Database.HotContext;
+using Logic.Administration;
+using Logic.Shared.Repositories;
+using Logic.Shared.UnitsOfWork;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Web.Core.Bundles
@@ -7,6 +14,12 @@ namespace Web.Core.Bundles
     {
         internal static void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
+
+            services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
@@ -23,9 +36,17 @@ namespace Web.Core.Bundles
                 {
                     throw new InvalidOperationException("No database connection found!");
                 }
+
                 opt.UseMySQL(connection);
 
             });
+        }
+
+        internal static void ConfigureRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IUserAdministrationRepository, UserAdministartionRepository>();
+            services.AddScoped<IUserAdministrationService, UserAdministrationService>();
+            services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
         }
     }
 }

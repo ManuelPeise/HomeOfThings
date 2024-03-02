@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Data.Interfaces.Interfaces.Repositories
 {
-    public interface IRepositoryBase<T> where T : AEntity
+    public interface IRepositoryBase<T>: IDisposable where T : AEntity
     {
         Task<IList<T>> GetAllAsync(
          Expression<Func<T, bool>>? expression = null, bool asNoTracking = true);

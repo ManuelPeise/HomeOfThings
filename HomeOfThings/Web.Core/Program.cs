@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Web.Core.Bundles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 AppConfig.ConfigureDatabaseService(builder.Services, builder.Configuration);
 AppConfig.ConfigureServices(builder.Services);
+AppConfig.ConfigureRepositories(builder.Services);
 
 var app = builder.Build();
 
@@ -19,6 +21,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

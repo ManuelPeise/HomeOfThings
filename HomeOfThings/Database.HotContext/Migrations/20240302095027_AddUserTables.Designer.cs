@@ -3,6 +3,7 @@ using System;
 using Database.HotContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.HotContext.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240302095027_AddUserTables")]
+    partial class AddUserTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,22 +114,6 @@ namespace Database.HotContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserTable");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 2, 9, 52, 41, 311, DateTimeKind.Utc).AddTicks(1115),
-                            CreatedBy = "System",
-                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "exampleuser@gmx.com",
-                            FirstName = "",
-                            IsActive = true,
-                            LastName = "",
-                            Password = "UEBzc3dvcmRjZTY5YzExNy0zNzk5LTQ4MjMtOTU5Ny01MDYxMGU3ZDViNjU=",
-                            Salt = "ce69c117-3799-4823-9597-50610e7d5b65",
-                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-02T09:52:41.3111117Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
-                        });
                 });
 
             modelBuilder.Entity("Date.Models.Entities.User.UserRoleEntity", b =>
@@ -158,32 +145,6 @@ namespace Database.HotContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserRolesTable");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 2, 9, 52, 41, 311, DateTimeKind.Utc).AddTicks(609),
-                            CreatedBy = "System",
-                            Description = "Default User",
-                            Name = "User"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 2, 9, 52, 41, 311, DateTimeKind.Utc).AddTicks(619),
-                            CreatedBy = "System",
-                            Description = "Admin User",
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 2, 9, 52, 41, 311, DateTimeKind.Utc).AddTicks(621),
-                            CreatedBy = "System",
-                            Description = "System Admin User",
-                            Name = "System Admin"
-                        });
                 });
 #pragma warning restore 612, 618
         }
