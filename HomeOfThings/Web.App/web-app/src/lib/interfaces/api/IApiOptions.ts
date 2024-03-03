@@ -1,5 +1,7 @@
+import { ApiEndpointEnum } from "../../enums/ApiEndpointEnum"
+
 export interface IApiOptions{
-    serviceUrl: string
+    serviceUrl: ApiEndpointEnum
     parameters: null | string
     requestOptions: RequestInit
 }

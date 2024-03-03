@@ -1,6 +1,6 @@
 import React from "react"
 
-const useFormModel = <T>(initialState:T, validationCallBack?: () => boolean) =>{
+const useFormModel = <T>(initialState:T, validationCallBack?: (model: T) => boolean) =>{
     const originalRef = React.useRef<T | null>(null)
 
     const [model, setModel] = React.useState<T>(initialState)
@@ -18,11 +18,13 @@ const useFormModel = <T>(initialState:T, validationCallBack?: () => boolean) =>{
         return changesApplied && isValidModel
     },[changesApplied, isValidModel])
 
-    const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>, property: keyof T) => {
-        setModel({...model, [property]: e.currentTarget.value})
+    const handleTextChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>, property: keyof T) => {
+        console.log("CHANGE")
+        const update: T = {...model, [property]: e.currentTarget.value as string}
+        setModel(update)
         
         if(validationCallBack !== undefined){
-            setIsValidModel(validationCallBack())
+            setIsValidModel(validationCallBack(update))
         }
     },[model, validationCallBack])
 
@@ -35,7 +37,7 @@ const useFormModel = <T>(initialState:T, validationCallBack?: () => boolean) =>{
         isValidModel,
         changesApplied,
         canSave,
-        handleChange,
+        handleTextChange,
         handleReset
     }
     

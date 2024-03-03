@@ -1,7 +1,8 @@
 import { IApiOptions } from "./IApiOptions";
 
 export interface IStatelessApi<T>{
-    get: (options?: IApiOptions) => Promise<T | null>
-    post: (options: IApiOptions, body: string) => Promise<void>
+    get: (options?: Partial<IApiOptions>) => Promise<T | null>
+    post: (options: Partial<IApiOptions>) => Promise<void>
+    postWithContent: (options: Partial<IApiOptions>) => Promise<T | null>
     rebind: () => Promise<T|null>
 }
