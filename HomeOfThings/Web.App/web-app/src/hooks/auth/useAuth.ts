@@ -16,7 +16,7 @@ const initialModel: IAuthContext = {
 export const AuthContext = React.createContext(initialModel)
 
 export const useAuth = () => {
-    const [userData, setUserData] = React.useState<IUserData | null>(null)
+    const [userData, setUserData] = React.useState<IUserData | null>({email: "maxmustermann@gmx.de"})
 
     const loginApiService = useStatelessApi<IUserData>().create({
         serviceUrl: ApiEndpointEnum.PostLogin,

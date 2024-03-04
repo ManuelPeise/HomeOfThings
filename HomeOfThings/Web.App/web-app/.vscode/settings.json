@@ -1,11 +1,23 @@
 {
+    "editor.formatOnSave": true,
     "cSpell.words": [
         "Anmelden",
         "Anmeldung",
+        "Benutzer",
+        "Finanzen",
+        "listitems",
+        "mustermann",
+        "Overridable",
         "Passwort",
+        "Planung",
+        "Profil",
+        "Profildaten",
         "Registrieren",
         "Registrierung",
+        "Spiele",
         "Textfields",
+        "Übersicht",
+        "Vergleich",
         "Vorname",
         "wiederholen"
     ]

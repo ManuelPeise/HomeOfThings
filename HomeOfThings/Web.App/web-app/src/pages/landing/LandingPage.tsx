@@ -1,17 +1,16 @@
-import React from "react"
+import React from "react";
 
-interface ITest{
-    name: string
-    age: number
+interface ITest {
+  name: string;
+  age: number;
 }
 
-const LandingPage: React.FC = () =>{
+const LandingPage: React.FC = () => {
+  return (
+    <div>
+      <label>Hello World</label>
+    </div>
+  );
+};
 
-    return(
-        <div>
-       <label>TEst</label>
-        </div>
-    )
-}
-
-export default LandingPage
+export default LandingPage;
