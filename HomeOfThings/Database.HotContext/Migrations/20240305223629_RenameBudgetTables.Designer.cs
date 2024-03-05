@@ -3,6 +3,7 @@ using System;
 using Database.HotContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.HotContext.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240305223629_RenameBudgetTables")]
+    partial class RenameBudgetTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,9 +111,6 @@ namespace Database.HotContext.Migrations
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -223,7 +223,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 53, 8, 432, DateTimeKind.Utc).AddTicks(1960),
+                            CreatedAt = new DateTime(2024, 3, 5, 22, 36, 29, 744, DateTimeKind.Utc).AddTicks(7858),
                             CreatedBy = "System",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "exampleuser@gmx.com",
@@ -231,9 +231,9 @@ namespace Database.HotContext.Migrations
                             FirstName = "",
                             IsActive = true,
                             LastName = "",
-                            Password = "UEBzc3dvcmRiZmZjYjEzMy02ZTM0LTRmYzUtOGU5My1kNGM3OGE4YWE5NmE=",
-                            Salt = "bffcb133-6e34-4fc5-8e93-d4c78a8aa96a",
-                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-05T22:53:08.4321962Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
+                            Password = "UEBzc3dvcmQyOWE1NGFiNS1hNTY0LTQyMmMtYmEzZS01ZmIxMTQ5OWU1ZTE=",
+                            Salt = "29a54ab5-a564-422c-ba3e-5fb11499e5e1",
+                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-05T22:36:29.744786Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
                         });
                 });
 
@@ -271,7 +271,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 53, 8, 432, DateTimeKind.Utc).AddTicks(1560),
+                            CreatedAt = new DateTime(2024, 3, 5, 22, 36, 29, 744, DateTimeKind.Utc).AddTicks(7410),
                             CreatedBy = "System",
                             Description = "Default User",
                             Name = "User"
@@ -279,7 +279,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 53, 8, 432, DateTimeKind.Utc).AddTicks(1566),
+                            CreatedAt = new DateTime(2024, 3, 5, 22, 36, 29, 744, DateTimeKind.Utc).AddTicks(7416),
                             CreatedBy = "System",
                             Description = "Admin User",
                             Name = "Admin"
@@ -287,7 +287,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 53, 8, 432, DateTimeKind.Utc).AddTicks(1567),
+                            CreatedAt = new DateTime(2024, 3, 5, 22, 36, 29, 744, DateTimeKind.Utc).AddTicks(7418),
                             CreatedBy = "System",
                             Description = "System Admin User",
                             Name = "System Admin"

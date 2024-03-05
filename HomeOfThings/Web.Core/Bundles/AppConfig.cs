@@ -1,5 +1,6 @@
 ﻿using Data.Interfaces.Interfaces.Clients;
 using Data.Interfaces.Interfaces.Repositories.Administration;
+using Data.Interfaces.Interfaces.Repositories.Finances;
 using Data.Interfaces.Interfaces.Repositories.User;
 using Data.Interfaces.UnitsOfWork;
 using Database.HotContext;
@@ -49,6 +50,7 @@ namespace Web.Core.Bundles
             services.AddScoped<IUserAdministrationRepository, UserAdministartionRepository>();
             services.AddScoped<IUserAdministrationService, UserAdministrationService>();
             services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
+            services.AddScoped<IBudgetRepository, BudgetRepository>();
         }
 
         internal static void ConfigureClients(IServiceCollection services)
