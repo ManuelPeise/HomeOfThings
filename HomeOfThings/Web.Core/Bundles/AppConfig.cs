@@ -55,5 +55,18 @@ namespace Web.Core.Bundles
         {
             services.AddScoped<IEmailClient, EmailClient>();
         }
+
+        internal static void ConfigureCors(IServiceCollection services, string policy)
+        {
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy(policy, opt =>
+                {
+                    opt.AllowAnyHeader();
+                    opt.AllowAnyMethod();
+                    opt.AllowAnyOrigin();
+                });
+            });
+        }
     }
 }

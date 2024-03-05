@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Web.Core.Bundles;
 
+var corsPolicy = "policy";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+AppConfig.ConfigureCors(builder.Services, corsPolicy);
 AppConfig.ConfigureDatabaseService(builder.Services, builder.Configuration);
 AppConfig.ConfigureServices(builder.Services);
 AppConfig.ConfigureRepositories(builder.Services);
@@ -20,6 +22,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(corsPolicy);
 
 app.UseAuthorization();
 app.UseAuthentication();
