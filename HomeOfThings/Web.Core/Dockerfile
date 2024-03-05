@@ -9,6 +9,16 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Web.Core/Web.Core.csproj", "Web.Core/"]
+COPY ["Data.Interfaces/Data.Interfaces.csproj", "Data.Interfaces/"]
+COPY ["Date.Models/Date.Models.csproj", "Date.Models/"]
+COPY ["Database.HotContext/Database.HotContext.csproj", "Database.HotContext/"]
+COPY ["Logic.Administration/Logic.Administration.csproj", "Logic.Administration/"]
+COPY ["Logic.Shared/Logic.Shared.csproj", "Logic.Shared/"]
+COPY ["Data.Ressources/Data.Ressources.csproj", "Data.Ressources/"]
+COPY ["Service.Administration/Service.Administration.csproj", "Service.Administration/"]
+COPY ["Service.Shared/Service.Shared.csproj", "Service.Shared/"]
+COPY ["Service.UserService/Service.UserService.csproj", "Service.UserService/"]
+COPY ["Logic.UserService/Logic.UserService.csproj", "Logic.UserService/"]
 RUN dotnet restore "./Web.Core/Web.Core.csproj"
 COPY . .
 WORKDIR "/src/Web.Core"
