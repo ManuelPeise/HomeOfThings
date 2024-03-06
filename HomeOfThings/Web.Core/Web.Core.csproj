@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Logic.Administration\Logic.Administration.csproj" />
     <ProjectReference Include="..\Logic.Shared\Logic.Shared.csproj" />
     <ProjectReference Include="..\Service.Administration\Service.Administration.csproj" />
+    <ProjectReference Include="..\Service.Finance\Service.Finance.csproj" />
     <ProjectReference Include="..\Service.UserService\Service.UserService.csproj" />
   </ItemGroup>
 
