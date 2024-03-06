@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.HotContext.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240305222739_ExtendFinanceManagementTables")]
-    partial class ExtendFinanceManagementTables
+    [Migration("20240306160359_InitializeDababase")]
+    partial class InitializeDababase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace Database.HotContext.Migrations
                 .HasAnnotation("ProductVersion", "7.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Date.Models.Entities.Finance.FinanceAccount", b =>
+            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetAccount", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,20 +46,14 @@ namespace Database.HotContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FinanceAccountTable");
+                    b.ToTable("BudgetAccountTable");
                 });
 
-            modelBuilder.Entity("Date.Models.Entities.Finance.FinanceAccountDepartment", b =>
+            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -67,8 +61,44 @@ namespace Database.HotContext.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ParentAccountId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BudgetDepartmentTable");
+                });
+
+            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartmentAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BudgetAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BudgetDepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("IsPayment")
                         .HasColumnType("tinyint(1)");
@@ -82,45 +112,12 @@ namespace Database.HotContext.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId")
-                        .IsUnique();
-
-                    b.HasIndex("DepartmentId")
-                        .IsUnique();
-
-                    b.ToTable("FinanceAccountDepartment");
-                });
-
-            modelBuilder.Entity("Date.Models.Entities.Finance.FinanceDepartment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("FinanceDepartmentTable");
+                    b.ToTable("BudgetDepartmentAccountTable");
                 });
 
             modelBuilder.Entity("Date.Models.Entities.Log.LogEntity", b =>
@@ -218,23 +215,6 @@ namespace Database.HotContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserTable");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 27, 39, 615, DateTimeKind.Utc).AddTicks(777),
-                            CreatedBy = "System",
-                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "exampleuser@gmx.com",
-                            EmailConfirmed = false,
-                            FirstName = "",
-                            IsActive = true,
-                            LastName = "",
-                            Password = "UEBzc3dvcmQ2N2ViZjA0Yi0yZWZjLTQ4YzEtYWNmMS1iMmM3NjE2YmMyMmI=",
-                            Salt = "67ebf04b-2efc-48c1-acf1-b2c7616bc22b",
-                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-05T22:27:39.6150778Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
-                        });
                 });
 
             modelBuilder.Entity("Date.Models.Entities.User.UserRoleEntity", b =>
@@ -266,63 +246,6 @@ namespace Database.HotContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserRolesTable");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 27, 39, 615, DateTimeKind.Utc).AddTicks(380),
-                            CreatedBy = "System",
-                            Description = "Default User",
-                            Name = "User"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 27, 39, 615, DateTimeKind.Utc).AddTicks(387),
-                            CreatedBy = "System",
-                            Description = "Admin User",
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 27, 39, 615, DateTimeKind.Utc).AddTicks(389),
-                            CreatedBy = "System",
-                            Description = "System Admin User",
-                            Name = "System Admin"
-                        });
-                });
-
-            modelBuilder.Entity("Date.Models.Entities.Finance.FinanceAccountDepartment", b =>
-                {
-                    b.HasOne("Date.Models.Entities.Finance.FinanceAccount", "Account")
-                        .WithOne("FinanceAccountDepartment")
-                        .HasForeignKey("Date.Models.Entities.Finance.FinanceAccountDepartment", "AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Date.Models.Entities.Finance.FinanceDepartment", "Department")
-                        .WithOne("FinanceAccountDepartment")
-                        .HasForeignKey("Date.Models.Entities.Finance.FinanceAccountDepartment", "DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("Date.Models.Entities.Finance.FinanceAccount", b =>
-                {
-                    b.Navigation("FinanceAccountDepartment")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Date.Models.Entities.Finance.FinanceDepartment", b =>
-                {
-                    b.Navigation("FinanceAccountDepartment")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

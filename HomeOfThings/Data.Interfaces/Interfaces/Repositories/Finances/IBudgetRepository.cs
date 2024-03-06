@@ -7,6 +7,6 @@ namespace Data.Interfaces.Interfaces.Repositories.Finances
         Task<List<BudgetDepartmentAccount>> GetBudgetDepartmentAccounts(int userId);
         Task<BudgetAccount?> GetBudgetAccount(int accountId);
         Task<BudgetDepartment?> GetBudgetDepartment(int departmentId);
-        Task<bool> SaveBudgetDepartmentAccount(BudgetDepartmentAccount model)
+        Task<bool> SaveBudgetDepartmentAccount(BudgetDepartmentAccount model);
     }
 }

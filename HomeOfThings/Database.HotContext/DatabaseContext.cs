@@ -19,6 +19,8 @@ namespace Database.HotContext
 
             modelBuilder.ApplyConfiguration(new UserRoleSeed());
             modelBuilder.ApplyConfiguration(new UserSeed(_configuration));
+            modelBuilder.ApplyConfiguration(new BudgetAccoutSeed());
+            modelBuilder.ApplyConfiguration(new BudgetDepartmentSeed());
         }
 
         public DbSet<LogEntity> LogTable { get; set; }

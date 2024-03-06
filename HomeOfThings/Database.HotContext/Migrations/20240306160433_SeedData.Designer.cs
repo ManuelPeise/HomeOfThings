@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.HotContext.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240305223629_RenameBudgetTables")]
-    partial class RenameBudgetTables
+    [Migration("20240306160433_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,15 +47,104 @@ namespace Database.HotContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BudgetAccountTable");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2215),
+                            CreatedBy = "System",
+                            Key = "labelActivities",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2216),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2220),
+                            CreatedBy = "System",
+                            Key = "labelCar",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2221),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2222),
+                            CreatedBy = "System",
+                            Key = "labelCarryOfLastMonth",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2223),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2224),
+                            CreatedBy = "System",
+                            Key = "labelCommunication",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2225),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2226),
+                            CreatedBy = "System",
+                            Key = "labelGastronomy",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2227),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2230),
+                            CreatedBy = "System",
+                            Key = "labelIncome",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2230),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2232),
+                            CreatedBy = "System",
+                            Key = "labelReside",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2232),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2233),
+                            CreatedBy = "System",
+                            Key = "labelShopping",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2234),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2235),
+                            CreatedBy = "System",
+                            Key = "labelTobacco",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2236),
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2238),
+                            CreatedBy = "System",
+                            Key = "labelVacation",
+                            UpdatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(2239),
+                            UpdatedBy = "System"
+                        });
                 });
 
             modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -67,6 +156,9 @@ namespace Database.HotContext.Migrations
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("ParentAccountId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -85,20 +177,20 @@ namespace Database.HotContext.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BudgetAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BudgetDepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsPayment")
                         .HasColumnType("tinyint(1)");
@@ -112,13 +204,10 @@ namespace Database.HotContext.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId")
-                        .IsUnique();
-
-                    b.HasIndex("DepartmentId")
-                        .IsUnique();
 
                     b.ToTable("BudgetDepartmentAccountTable");
                 });
@@ -223,7 +312,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 36, 29, 744, DateTimeKind.Utc).AddTicks(7858),
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(1629),
                             CreatedBy = "System",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "exampleuser@gmx.com",
@@ -231,9 +320,9 @@ namespace Database.HotContext.Migrations
                             FirstName = "",
                             IsActive = true,
                             LastName = "",
-                            Password = "UEBzc3dvcmQyOWE1NGFiNS1hNTY0LTQyMmMtYmEzZS01ZmIxMTQ5OWU1ZTE=",
-                            Salt = "29a54ab5-a564-422c-ba3e-5fb11499e5e1",
-                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-05T22:36:29.744786Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
+                            Password = "UEBzc3dvcmRlNGI4NzJlNC00ZmNjLTRhNmMtODEzNi1iZTM3YzliYmJhOGI=",
+                            Salt = "e4b872e4-4fcc-4a6c-8136-be37c9bbba8b",
+                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-06T16:04:33.0461631Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
                         });
                 });
 
@@ -271,7 +360,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 36, 29, 744, DateTimeKind.Utc).AddTicks(7410),
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(1132),
                             CreatedBy = "System",
                             Description = "Default User",
                             Name = "User"
@@ -279,7 +368,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 36, 29, 744, DateTimeKind.Utc).AddTicks(7416),
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(1139),
                             CreatedBy = "System",
                             Description = "Admin User",
                             Name = "Admin"
@@ -287,42 +376,11 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 5, 22, 36, 29, 744, DateTimeKind.Utc).AddTicks(7418),
+                            CreatedAt = new DateTime(2024, 3, 6, 16, 4, 33, 46, DateTimeKind.Utc).AddTicks(1140),
                             CreatedBy = "System",
                             Description = "System Admin User",
                             Name = "System Admin"
                         });
-                });
-
-            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartmentAccount", b =>
-                {
-                    b.HasOne("Date.Models.Entities.Finance.BudgetAccount", "Account")
-                        .WithOne("FinanceAccountDepartment")
-                        .HasForeignKey("Date.Models.Entities.Finance.BudgetDepartmentAccount", "AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Date.Models.Entities.Finance.BudgetDepartment", "Department")
-                        .WithOne("FinanceAccountDepartment")
-                        .HasForeignKey("Date.Models.Entities.Finance.BudgetDepartmentAccount", "DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetAccount", b =>
-                {
-                    b.Navigation("FinanceAccountDepartment")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartment", b =>
-                {
-                    b.Navigation("FinanceAccountDepartment")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
