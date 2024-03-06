@@ -61,6 +61,16 @@ namespace Files {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        public static byte[] BudgetAccountTemplate {
+            get {
+                object obj = ResourceManager.GetObject("BudgetAccountTemplate", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die &lt;div style=&quot;display: flex; justify-content: center;&quot;&gt;
         ///    &lt;div style=&quot;display: flex; flex-direction: column&quot;&gt;
         ///        &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;

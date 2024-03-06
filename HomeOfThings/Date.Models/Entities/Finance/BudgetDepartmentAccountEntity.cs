@@ -2,7 +2,7 @@
 
 namespace Date.Models.Entities.Finance
 {
-    public class BudgetDepartmentAccount: AEntity
+    public class BudgetDepartmentAccountEntity: AEntity
     {
         public int BudgetAccountId { get; set; }
         public int BudgetDepartmentId { get; set; }

@@ -1,0 +1,114 @@
+{
+    "budgetAccounts": [
+        {
+            "departments": [
+                {
+                    "id": 1,
+                    "key": "labelFamilyActivities"
+                }
+            ],
+            "id": 1,
+            "key": "labelActivities"
+        },
+        {
+            "departments": [
+                {
+                    "id": 2,
+                    "key": "labelWorkShop"
+                },
+                {
+                    "id": 3,
+                    "key": "labelRefuel"
+                }
+            ],
+            "id": 2,
+            "key": "labelCar"
+        },
+        {
+            "departments": [
+                {
+                    "id": 4,
+                    "key": "labelTransfer"
+                }
+            ],
+            "id": 3,
+            "key": "labelCarryOfLastMonth"
+        },
+        {
+            "departments": [
+                {
+                    "id": 5,
+                    "key": "labelTeleCommunication"
+                }
+            ],
+            "id": 4,
+            "key": "labelCommunication"
+        },
+        {
+            "departments": [
+                {
+                    "id": 6,
+                    "key": "labelRestaurantVisit"
+                }
+            ],
+            "id": 5,
+            "key": "labelGastronomy"
+        },
+        {
+            "departments": [
+                {
+                    "id": 7,
+                    "key": "labelSalary"
+                },
+                {
+                    "id": 8,
+                    "key": "labelOtherIncome"
+                }
+            ],
+            "id": 6,
+            "key": "labelIncome"
+        },
+        {
+            "departments": [
+                {
+                    "id": 9,
+                    "key": "labelRent"
+                },
+                {
+                    "id": 10,
+                    "key": "labelEnergy"
+                }
+            ],
+            "id": 7,
+            "key": "labelReside"
+        },
+        {
+            "departments": [
+                {
+                    "id": 11,
+                    "key": "labelGroceries"
+                },
+                {
+                    "id": 12,
+                    "key": "labelTobacco"
+                }
+            ],
+            "id": 8,
+            "key": "labelShopping"
+        },
+        {
+            "departments": [
+                {
+                    "id": 13,
+                    "key": "labelAccommodation"
+                },
+                {
+                    "id": 14,
+                    "key": "labelTouristTax"
+                }
+            ],
+            "id": 9,
+            "key": "labelVacation"
+        }
+    ]
+}

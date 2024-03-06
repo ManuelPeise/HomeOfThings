@@ -19,16 +19,14 @@ namespace Database.HotContext
 
             modelBuilder.ApplyConfiguration(new UserRoleSeed());
             modelBuilder.ApplyConfiguration(new UserSeed(_configuration));
-            modelBuilder.ApplyConfiguration(new BudgetAccoutSeed());
-            modelBuilder.ApplyConfiguration(new BudgetDepartmentSeed());
         }
 
         public DbSet<LogEntity> LogTable { get; set; }
         public DbSet<UserEntity> UserTable { get; set; }
         public DbSet<UserRoleEntity> UserRolesTable { get; set; }
 
-        public DbSet<BudgetAccount> BudgetAccountTable { get; set; }
-        public DbSet<BudgetDepartment> BudgetDepartmentTable { get; set; }
-        public DbSet<BudgetDepartmentAccount> BudgetDepartmentAccountTable { get; set; }
+        public DbSet<BudgetAccountEntity> BudgetAccountTable { get; set; }
+        public DbSet<BudgetDepartmentEntity> BudgetDepartmentTable { get; set; }
+        public DbSet<BudgetDepartmentAccountEntity> BudgetDepartmentAccountTable { get; set; }
     }
 }

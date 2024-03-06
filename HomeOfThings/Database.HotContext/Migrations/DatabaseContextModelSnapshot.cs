@@ -19,7 +19,7 @@ namespace Database.HotContext.Migrations
                 .HasAnnotation("ProductVersion", "7.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetAccount", b =>
+            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetAccountEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,260 +44,9 @@ namespace Database.HotContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BudgetAccountTable");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5080),
-                            CreatedBy = "System",
-                            Key = "labelActivities",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5082),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5085),
-                            CreatedBy = "System",
-                            Key = "labelCar",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5086),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5088),
-                            CreatedBy = "System",
-                            Key = "labelCarryOfLastMonth",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5088),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5089),
-                            CreatedBy = "System",
-                            Key = "labelCommunication",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5090),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5091),
-                            CreatedBy = "System",
-                            Key = "labelGastronomy",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5092),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5095),
-                            CreatedBy = "System",
-                            Key = "labelIncome",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5095),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5097),
-                            CreatedBy = "System",
-                            Key = "labelReside",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5097),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5098),
-                            CreatedBy = "System",
-                            Key = "labelShopping",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5099),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5100),
-                            CreatedBy = "System",
-                            Key = "labelVacation",
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5101),
-                            UpdatedBy = "System"
-                        });
                 });
 
-            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("ParentAccountId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BudgetDepartmentTable");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5311),
-                            CreatedBy = "System",
-                            Key = "labelFamilyActivities",
-                            ParentAccountId = 1,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5312),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5315),
-                            CreatedBy = "System",
-                            Key = "labelWorkShop",
-                            ParentAccountId = 2,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5316),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5317),
-                            CreatedBy = "System",
-                            Key = "labelRefuel",
-                            ParentAccountId = 2,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5318),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5319),
-                            CreatedBy = "System",
-                            Key = "labelTransfer",
-                            ParentAccountId = 3,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5320),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5321),
-                            CreatedBy = "System",
-                            Key = "labelTeleCommunication",
-                            ParentAccountId = 4,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5322),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5324),
-                            CreatedBy = "System",
-                            Key = "labelRestaurantVisit",
-                            ParentAccountId = 5,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5325),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5326),
-                            CreatedBy = "System",
-                            Key = "labelSalary",
-                            ParentAccountId = 6,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5327),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5328),
-                            CreatedBy = "System",
-                            Key = "labelOtherIncome",
-                            ParentAccountId = 6,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5329),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5330),
-                            CreatedBy = "System",
-                            Key = "labelReside",
-                            ParentAccountId = 7,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5331),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5333),
-                            CreatedBy = "System",
-                            Key = "labelEnergy",
-                            ParentAccountId = 7,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5334),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5335),
-                            CreatedBy = "System",
-                            Key = "labelGroceries",
-                            ParentAccountId = 8,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5336),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5337),
-                            CreatedBy = "System",
-                            Key = "labelTobacco",
-                            ParentAccountId = 8,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5338),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5339),
-                            CreatedBy = "System",
-                            Key = "labelAccommodation",
-                            ParentAccountId = 9,
-                            UpdatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(5339),
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Key = "labelTouristTax",
-                            ParentAccountId = 9
-                        });
-                });
-
-            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartmentAccount", b =>
+            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartmentAccountEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -336,6 +85,36 @@ namespace Database.HotContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BudgetDepartmentAccountTable");
+                });
+
+            modelBuilder.Entity("Date.Models.Entities.Finance.BudgetDepartmentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ParentAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BudgetDepartmentTable");
                 });
 
             modelBuilder.Entity("Date.Models.Entities.Log.LogEntity", b =>
@@ -438,7 +217,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(4560),
+                            CreatedAt = new DateTime(2024, 3, 6, 19, 51, 21, 205, DateTimeKind.Utc).AddTicks(9599),
                             CreatedBy = "System",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "exampleuser@gmx.com",
@@ -446,9 +225,9 @@ namespace Database.HotContext.Migrations
                             FirstName = "",
                             IsActive = true,
                             LastName = "",
-                            Password = "UEBzc3dvcmQyMTEwYzU3ZC00NTk3LTQ4OTktODdiZS1lZTdmNGFmMjM2ZjY=",
-                            Salt = "2110c57d-4597-4899-87be-ee7f4af236f6",
-                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-06T16:25:03.4394563Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
+                            Password = "UEBzc3dvcmRkMTJlNjc1Ny0wYmM0LTRjOTEtODAwYy1iZWMyMmJjZGNjYjA=",
+                            Salt = "d12e6757-0bc4-4c91-800c-bec22bcdccb0",
+                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-06T19:51:21.20596Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
                         });
                 });
 
@@ -486,7 +265,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(4143),
+                            CreatedAt = new DateTime(2024, 3, 6, 19, 51, 21, 205, DateTimeKind.Utc).AddTicks(9213),
                             CreatedBy = "System",
                             Description = "Default User",
                             Name = "User"
@@ -494,7 +273,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(4150),
+                            CreatedAt = new DateTime(2024, 3, 6, 19, 51, 21, 205, DateTimeKind.Utc).AddTicks(9220),
                             CreatedBy = "System",
                             Description = "Admin User",
                             Name = "Admin"
@@ -502,7 +281,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 6, 16, 25, 3, 439, DateTimeKind.Utc).AddTicks(4152),
+                            CreatedAt = new DateTime(2024, 3, 6, 19, 51, 21, 205, DateTimeKind.Utc).AddTicks(9221),
                             CreatedBy = "System",
                             Description = "System Admin User",
                             Name = "System Admin"

@@ -8,9 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data.Interfaces\Data.Interfaces.csproj" />
-    <ProjectReference Include="..\Database.HotContext\Database.HotContext.csproj" />
-    <ProjectReference Include="..\Logic.Administration\Logic.Administration.csproj" />
-    <ProjectReference Include="..\Service.Shared\Service.Shared.csproj" />
+    <ProjectReference Include="..\Logic.Shared\Logic.Shared.csproj" />
   </ItemGroup>
 
 </Project>

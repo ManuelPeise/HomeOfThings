@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Service.Finance\Service.Finance.csproj" />
     <ProjectReference Include="..\Data.Interfaces\Data.Interfaces.csproj" />
     <ProjectReference Include="..\Database.HotContext\Database.HotContext.csproj" />
     <ProjectReference Include="..\Logic.Administration\Logic.Administration.csproj" />

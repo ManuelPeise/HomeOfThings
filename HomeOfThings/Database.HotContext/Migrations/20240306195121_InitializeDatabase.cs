@@ -4,10 +4,12 @@ using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Database.HotContext.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDababase : Migration
+    public partial class InitializeDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -141,6 +143,21 @@ namespace Database.HotContext.Migrations
                     table.PrimaryKey("PK_UserTable", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "UserRolesTable",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "Name", "UpdatedAt", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 3, 6, 19, 51, 21, 205, DateTimeKind.Utc).AddTicks(9213), "System", "Default User", "User", null, null },
+                    { 2, new DateTime(2024, 3, 6, 19, 51, 21, 205, DateTimeKind.Utc).AddTicks(9220), "System", "Admin User", "Admin", null, null },
+                    { 3, new DateTime(2024, 3, 6, 19, 51, 21, 205, DateTimeKind.Utc).AddTicks(9221), "System", "System Admin User", "System Admin", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserTable",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "IsActive", "LastName", "Password", "Salt", "UpdatedAt", "UpdatedBy", "UserRolesJson" },
+                values: new object[] { 1, new DateTime(2024, 3, 6, 19, 51, 21, 205, DateTimeKind.Utc).AddTicks(9599), "System", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "exampleuser@gmx.com", false, "", true, "", "UEBzc3dvcmRkMTJlNjc1Ny0wYmM0LTRjOTEtODAwYy1iZWMyMmJjZGNjYjA=", "d12e6757-0bc4-4c91-800c-bec22bcdccb0", null, null, "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-06T19:51:21.20596Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}" });
         }
 
         /// <inheritdoc />

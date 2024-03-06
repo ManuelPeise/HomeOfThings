@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HomeOfThings\Data.Interfaces\Data.Interfaces.csproj" />
+    <ProjectReference Include="..\HomeOfThings\Logic.Finances\Logic.Finances.csproj" />
+    <ProjectReference Include="..\HomeOfThings\Service.Shared\Service.Shared.csproj" />
   </ItemGroup>
 
 </Project>

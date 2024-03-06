@@ -1,12 +1,17 @@
 ﻿using Date.Models.Entities.Finance;
+using Date.Models.Models.Finance;
 
 namespace Data.Interfaces.Interfaces.Repositories.Finances
 {
     public interface IBudgetRepository : IDisposable
     {
-        Task<List<BudgetDepartmentAccount>> GetBudgetDepartmentAccounts(int userId);
-        Task<BudgetAccount?> GetBudgetAccount(int accountId);
-        Task<BudgetDepartment?> GetBudgetDepartment(int departmentId);
-        Task<bool> SaveBudgetDepartmentAccount(BudgetDepartmentAccount model);
+        Task<bool> ImportAccount(BudgetAccount account);
+        Task<List<BudgetAccountEntity>> GetBudgetAccounts();
+        Task<List<BudgetDepartmentAccountEntity>> GetBudgetDepartmentAccounts(int userId);
+        Task<BudgetAccountEntity?> GetBudgetAccount(int accountId);
+        Task<BudgetDepartmentEntity?> GetBudgetDepartment(int departmentId);
+        Task<IEnumerable<BudgetDepartmentEntity>> GetBudgetAccountDepartments(int accountId);
+
+        Task<bool> SaveBudgetDepartmentAccount(BudgetDepartmentAccountEntity model);
     }
 }
