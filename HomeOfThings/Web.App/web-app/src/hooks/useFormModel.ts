@@ -1,47 +1,86 @@
-import React from "react"
+import React from 'react';
 
-const useFormModel = <T>(initialState:T, validationCallBack?: (model: T) => boolean) =>{
-    const originalRef = React.useRef<T | null>(null)
+const useFormModel = <T>(
+  initialState: T,
+  validationCallBack?: (model: T) => boolean
+) => {
+  const [model, setModel] = React.useState<T>(initialState);
+  const [isValidModel, setIsValidModel] = React.useState<boolean>(false);
 
-    const [model, setModel] = React.useState<T>(initialState)
-    const [isValidModel, setIsValidModel] = React.useState<boolean>(false)
+  const changesApplied = React.useMemo(() => {
+    return JSON.stringify(model) !== JSON.stringify(initialState);
+  }, [model, initialState]);
 
-    React.useEffect(() =>{
-        originalRef.current = initialState
-    },[initialState])
+  const canSave = React.useMemo(() => {
+    return changesApplied && isValidModel;
+  }, [changesApplied, isValidModel]);
 
-    const changesApplied = React.useMemo(() =>{
-        return JSON.stringify(model) !== JSON.stringify(originalRef.current)
-    },[model])
+  const handleTextChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>, property: keyof T) => {
+      const update: T = {
+        ...model,
+        [property]: e.currentTarget.value as string,
+      };
+      setModel(update);
 
-    const canSave = React.useMemo(() =>{
-        return changesApplied && isValidModel
-    },[changesApplied, isValidModel])
+      if (validationCallBack !== undefined) {
+        setIsValidModel(validationCallBack(update));
+      }
+    },
+    [model, validationCallBack]
+  );
 
-    const handleTextChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>, property: keyof T) => {
-        console.log("CHANGE")
-        const update: T = {...model, [property]: e.currentTarget.value as string}
-        setModel(update)
-        
-        if(validationCallBack !== undefined){
-            setIsValidModel(validationCallBack(update))
-        }
-    },[model, validationCallBack])
+  const handleTextChanged = React.useCallback(
+    (value: string, property: keyof T) => {
+      const update: T = { ...model, [property]: value };
+      setModel(update);
 
-    const handleReset = React.useCallback(() =>{
-        setModel(originalRef?.current?? {} as T)
-    },[])
+      if (validationCallBack !== undefined) {
+        setIsValidModel(validationCallBack(update));
+      }
+    },
+    [model, validationCallBack]
+  );
 
-    return {
-        model,
-        isValidModel,
-        changesApplied,
-        canSave,
-        handleTextChange,
-        handleReset
-    }
-    
+  const handleNumberChanged = React.useCallback(
+    (value: number, property: keyof T) => {
+      const update: T = { ...model, [property]: value };
+      setModel(update);
 
-}
+      if (validationCallBack !== undefined) {
+        setIsValidModel(validationCallBack(update));
+      }
+    },
+    [model, validationCallBack]
+  );
 
-export default useFormModel
+  const handleBooleanChanged = React.useCallback(
+    (value: boolean, property: keyof T) => {
+      const update: T = { ...model, [property]: value };
+      setModel(update);
+
+      if (validationCallBack !== undefined) {
+        setIsValidModel(validationCallBack(update));
+      }
+    },
+    [model, validationCallBack]
+  );
+
+  const handleReset = React.useCallback(() => {
+    setModel(initialState);
+  }, [initialState]);
+
+  return {
+    model,
+    isValidModel,
+    changesApplied,
+    canSave,
+    handleTextChange,
+    handleTextChanged,
+    handleNumberChanged,
+    handleBooleanChanged,
+    handleReset,
+  };
+};
+
+export default useFormModel;

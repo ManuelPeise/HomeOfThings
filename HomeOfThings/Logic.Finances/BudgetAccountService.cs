@@ -57,6 +57,33 @@ namespace Logic.Finances
             }
         }
 
+        public async Task<bool> ImportAccountDepartment(BudgetAccountDepartment accountDepartment)
+        {
+            try
+            {
+                if( await _budgetRepository.ImportAccountDepartment(accountDepartment))
+                {
+                    await Save(_httpContext);
+                }
+
+                return true;
+
+            }catch (Exception exception)
+            {
+                await LogRepository.AddMessage(new LogEntity
+                {
+                    Message = "Could not import  budget account department!",
+                    ExMessage = exception.Message,
+                    StackTrace = exception.StackTrace,
+                    TimeStamp = DateTime.UtcNow,
+                    Trigger = nameof(BudgetAccountService)
+                });
+
+                await Save(_httpContext);
+
+                return false;
+            }
+        }
 
         #region dispose
         protected virtual void Dispose(bool disposing)

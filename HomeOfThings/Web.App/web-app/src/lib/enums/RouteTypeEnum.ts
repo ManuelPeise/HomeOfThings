@@ -3,5 +3,6 @@ export enum RouteTypeEnum{
     Auth = "/auth",
     About = "/about",
     Home = "/",
-    PlayGround = "playground"
+    PlayGround = "/playground",
+    ExpenseOverview = "/finance/expense-overview"
 }

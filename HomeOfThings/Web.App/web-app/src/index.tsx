@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import AppRouter from "./pages/router/appRouter";
-import "./index.css";
 import "./lib/translations/i18n";
 
 const root = ReactDOM.createRoot(

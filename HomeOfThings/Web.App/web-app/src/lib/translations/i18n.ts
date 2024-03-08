@@ -4,16 +4,19 @@ import {initReactI18next} from 'react-i18next'
 
 // EN
 import common_en from './en/common_en.json'
-
+import budget_en from "./en/budget_en.json"
 // DE
 import common_de from './de/common_de.json'
+import budget_de from "./de/budget_de.json"
 
 const resources = {
     en:{
-        common: common_en
+        common: common_en,
+        budget: budget_en
     },
     de:{
-        common: common_de
+        common: common_de,
+        budget: budget_de
     }
 }
 

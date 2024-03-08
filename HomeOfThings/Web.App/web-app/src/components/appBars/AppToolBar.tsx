@@ -5,10 +5,8 @@ import {
   StyledDrawerContainer,
   StyledDrawerList,
   StyledGrid,
-  StyledIconButton,
-  StyledToolBar,
 } from "../styledComponents";
-import { Box, CssBaseline, Divider, Grid } from "@mui/material";
+import { Box, CssBaseline, Divider, Grid, Toolbar } from "@mui/material";
 import { Menu, ArrowBackOutlined } from "@mui/icons-material";
 import Title from "../labels/Title";
 import TextButton from "../buttons/TextButton";
@@ -19,6 +17,7 @@ import { ColorTypeEnum } from "../../lib/enums/ColorTypeEnum";
 import { FontSizeEnum } from "../../lib/enums/FontSizeEnum";
 import { useNavigate } from "react-router-dom";
 import { RouteTypeEnum } from "../../lib/enums/RouteTypeEnum";
+import { StyledIconButton } from "../styledComponents/StyledButtons";
 
 const AppToolBar: React.FC = () => {
   const { userData } = React.useContext(AuthContext);
@@ -54,7 +53,7 @@ const AppToolBar: React.FC = () => {
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <StyledAppBar>
-          <StyledToolBar>
+          <Toolbar>
             <StyledIconButton
               style={{ color: "#ffffff" }}
               onClick={toggleDrawer.bind(null, !drawerOpen)}
@@ -80,7 +79,7 @@ const AppToolBar: React.FC = () => {
                 onClick={navigateToAuth}
               />
             )}
-          </StyledToolBar>
+          </Toolbar>
         </StyledAppBar>
         <StyledDrawer keepMounted open={drawerOpen}>
           <StyledDrawerContainer

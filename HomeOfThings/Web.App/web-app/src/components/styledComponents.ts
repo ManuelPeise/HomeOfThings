@@ -1,38 +1,10 @@
 import styled from "@emotion/styled";
-import { AppBar, Box, Button, Drawer, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText,  TextField, Typography } from "@mui/material";
 
-// Buttons
-
-export const StyledTextButton = styled(Button)(({theme}) =>({
-    color: "blue",
-    fontWeight:"bold",
-    opacity:.8,
-    "&:focus":{
-        opacity:1
-    },
-    "&:hover":{
-        opacity: 1,
-        fontWeight:"bold",
-        backgroundColor: "transparent"
-    },
-    "&.Mui-disabled":{
-        opacity: .5
-    }
-}))
-
-export const StyledIconButton = styled(IconButton)({
-    "&:hover":{
-        cursor: "pointer"
-    },
-    "&.Mui-disabled":{
-        opacity: .5,
-        cursor: "not-allowed"
-    }
-})
 // Textfields
 
 export const UnderlinedTextBox = styled(TextField)(({theme}) =>({
-    "&& .MuiInputBase-input":{
+    "&.MuiInputBase-input":{
         color: "blue",
         fontSize: "1.5rem",
         opacity:.7,
@@ -69,8 +41,6 @@ export const StyledAppBar = styled(AppBar)({
     top: 0,
     left:0, 
 })
-
-export const StyledToolBar = styled(Toolbar)({})
 
 // Drawer
 

@@ -47,6 +47,17 @@ namespace Logic.Shared.Repositories
             return false;
         }
 
+        public async Task<bool> ImportAccountDepartment(BudgetAccountDepartment accountDepartment)
+        {
+            if(accountDepartment != null)
+            {
+                var entity = accountDepartment.ToEntity();
+
+                return await _budgetDepartmentAccountRepository.Insert(entity);
+            }
+
+            return false;
+        }
         public async Task<List<BudgetAccountEntity>> GetBudgetAccounts()
         {
             var accountEntities = await _budgetAccountRepository.GetAllAsync();

@@ -39,7 +39,20 @@ namespace Logic.Shared.Extensions.Finance
             {
                 Id = department.Id,
                 Key = department.Key,
-                
+
+            };
+        }
+
+        public static BudgetDepartmentAccountEntity ToEntity(this BudgetAccountDepartment accountDepartment)
+        {
+            return new BudgetDepartmentAccountEntity
+            {
+                BudgetAccountId = accountDepartment.BudgetAccountId,
+                BudgetDepartmentId = accountDepartment.BudgetDepartmentId,
+                Amount = accountDepartment.Amount,
+                IsPayment = accountDepartment.IsPayment,
+                TimeStamp = accountDepartment.TimeStamp,
+                UserId = accountDepartment.UserId,
             };
         }
     }

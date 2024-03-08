@@ -28,5 +28,15 @@ namespace Service.Finance
                 return await service.GetAvailableBudgetAccounts();
             }
         }
+
+        [HttpPost(Name = "ImportAccountDepartment")]
+        public async Task<bool> ImportAccountDepartment([FromBody] BudgetAccountDepartment accountDepartment)
+        {
+            using (var service = new BudgetAccountService(_budgetRepository, _httpContextAccessor, _databaseContext))
+            {
+                return await service.ImportAccountDepartment(accountDepartment);
+            }
+        }
+
     }
 }
