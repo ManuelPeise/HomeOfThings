@@ -6,6 +6,7 @@ namespace Date.Models.Entities.User
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
+        public Guid? FamilyGuid { get; set; }
         public DateTime DateOfBirth { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = string.Empty;

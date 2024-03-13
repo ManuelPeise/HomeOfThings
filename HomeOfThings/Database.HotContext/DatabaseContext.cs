@@ -1,4 +1,5 @@
 ﻿using Database.HotContext.DataSeeds;
+using Date.Models.Entities.Family;
 using Date.Models.Entities.Finance;
 using Date.Models.Entities.Log;
 using Date.Models.Entities.User;
@@ -22,11 +23,12 @@ namespace Database.HotContext
         }
 
         public DbSet<LogEntity> LogTable { get; set; }
+        public DbSet<FamilyEntity> FamilyTable { get; set; }
         public DbSet<UserEntity> UserTable { get; set; }
         public DbSet<UserRoleEntity> UserRolesTable { get; set; }
 
-        public DbSet<BudgetAccountEntity> BudgetAccountTable { get; set; }
-        public DbSet<BudgetDepartmentEntity> BudgetDepartmentTable { get; set; }
-        public DbSet<BudgetDepartmentAccountEntity> BudgetDepartmentAccountTable { get; set; }
+        //public DbSet<BudgetAccountEntity> BudgetAccountTable { get; set; }
+        //public DbSet<BudgetDepartmentEntity> BudgetDepartmentTable { get; set; }
+        //public DbSet<BudgetDepartmentAccountEntity> BudgetDepartmentAccountTable { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Data.Interfaces.Interfaces.Clients;
 using Data.Interfaces.Interfaces.Repositories.Administration;
+using Data.Interfaces.Interfaces.Repositories.Family;
 using Data.Interfaces.Interfaces.Repositories.Finances;
 using Data.Interfaces.Interfaces.Repositories.User;
 using Data.Interfaces.UnitsOfWork;
@@ -47,6 +48,7 @@ namespace Web.Core.Bundles
 
         internal static void ConfigureRepositories(IServiceCollection services)
         {
+            services.AddScoped<IFamilyAdministrationRepository, FamilyAdministrationRepository>();
             services.AddScoped<IUserAdministrationRepository, UserAdministartionRepository>();
             services.AddScoped<IUserAdministrationService, UserAdministrationService>();
             services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
