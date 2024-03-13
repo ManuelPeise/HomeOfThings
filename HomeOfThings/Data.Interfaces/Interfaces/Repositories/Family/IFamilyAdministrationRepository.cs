@@ -11,5 +11,7 @@ namespace Data.Interfaces.Interfaces.Repositories.Family
         Task<string> GetAdminRoleJson();
         Task<bool> AddFamily(FamilyEntity entity);
         Task<bool> AddFamilyAdmin(UserEntity entity);
+        Task<bool> UpdateFamily(FamilyEntity entity);
+        void UpdateFamilyUser(UserEntity entity);
     }
 }

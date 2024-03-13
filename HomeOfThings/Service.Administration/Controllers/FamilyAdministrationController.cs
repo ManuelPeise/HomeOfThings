@@ -1,7 +1,6 @@
 ﻿using Data.Interfaces.Interfaces.Repositories.Administration;
 using Data.Interfaces.Interfaces.Repositories.Family;
 using Database.HotContext;
-using Date.Models.Models;
 using Date.Models.Models.Family;
 using Logic.Administration;
 using Microsoft.AspNetCore.Http;
@@ -49,6 +48,14 @@ namespace Service.Administration.Controllers
             var service = new FamilyAdministrationService(_databaseContext, _familyAdministrationRepo);
 
             return await service.RegisterFamily(model, _httpContextAccessor);
+        }
+
+        [HttpPost(Name = "UpdateFamily")]
+        public async Task<bool> UpdateFamily([FromBody] FamilyImportModel model)
+        {
+            var service = new FamilyAdministrationService(_databaseContext, _familyAdministrationRepo);
+
+            return await service.UpdateFamily(model, _httpContextAccessor);
         }
     }
 }

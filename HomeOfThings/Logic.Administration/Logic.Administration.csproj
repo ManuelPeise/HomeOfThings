@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data.Interfaces\Data.Interfaces.csproj" />
-    <ProjectReference Include="..\Logic.Finances\Logic.Finances.csproj" />
     <ProjectReference Include="..\Logic.Shared\Logic.Shared.csproj" />
   </ItemGroup>
 

@@ -10,9 +10,7 @@
     <ProjectReference Include="..\Data.Interfaces\Data.Interfaces.csproj" />
     <ProjectReference Include="..\Database.HotContext\Database.HotContext.csproj" />
     <ProjectReference Include="..\Data.Interfaces\Data.Interfaces.csproj" />
-    <ProjectReference Include="..\Logic.Finances\Logic.Finances.csproj" />
     <ProjectReference Include="..\Service.Shared\Service.Shared.csproj" />
-    <ProjectReference Include="..\Logic.Finances\Logic.Finances.csproj" />
     <ProjectReference Include="..\Service.Shared\Service.Shared.csproj" />
   </ItemGroup>
 

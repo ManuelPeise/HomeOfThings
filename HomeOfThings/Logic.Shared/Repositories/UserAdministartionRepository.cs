@@ -9,7 +9,6 @@ namespace Logic.Shared.Repositories
     {
         private readonly IRepositoryBase<UserEntity> _userRepositoryBase;
         private readonly IRepositoryBase<UserRoleEntity> _userRoleRepositoryBase;
-        private bool disposedValue;
         private bool disposedValue1;
 
         public UserAdministartionRepository(DatabaseContext context)

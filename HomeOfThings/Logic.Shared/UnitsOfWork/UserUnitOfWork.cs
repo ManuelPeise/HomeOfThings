@@ -93,7 +93,7 @@ namespace Logic.Shared.UnitsOfWork
                     new Claim("UserRoles", userRoleJson),
                 };
 
-            return claims;
+            return await Task.FromResult(claims);
         }
 
 

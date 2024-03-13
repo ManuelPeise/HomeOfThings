@@ -53,6 +53,24 @@ namespace Logic.Shared.Repositories
             return await _userRepository.InsertIfNotExists(entity, x => x.Email.Equals(entity.Email));
         }
 
+        public async Task<bool> UpdateFamily(FamilyEntity entity)
+        {
+            try
+            {
+                _familyRepository.Update(entity);
+            
+                return await Task.FromResult(true);
+
+            }catch(Exception) 
+            {
+                return await Task.FromResult(false);
+            }
+        }
+
+        public void UpdateFamilyUser(UserEntity entity)
+        {
+            _userRepository.Update(entity);
+        }
         #region dispose
         protected virtual void Dispose(bool disposing)
         {

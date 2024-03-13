@@ -21,7 +21,7 @@ namespace Logic.Shared.Clients
             switch (name)
             {
                 case RessourceNames.RegistrationMailBody:
-                    return Files.Resources.RegistrationMailBody;
+                    return await Task.FromResult(Files.Resources.RegistrationMailBody);
                 default: return string.Empty;
             }
         }

@@ -4,7 +4,6 @@ using Database.HotContext;
 using Date.Models.Entities;
 using Date.Models.Entities.Log;
 using Date.Models.Entities.User;
-using Date.Models.Models;
 using Date.Models.Models.Family;
 using Logic.Shared;
 using Logic.Shared.Extensions.Family;
@@ -136,6 +135,45 @@ namespace Logic.Administration
                 await LogRepository.AddMessage(new LogEntity
                 {
                     Message = $"Could not load families from database",
+                    ExMessage = exception.Message,
+                    StackTrace = exception.StackTrace,
+                    TimeStamp = DateTime.UtcNow,
+                    Trigger = nameof(FamilyAdministrationService)
+                });
+
+                await Save(contextAccessor.HttpContext);
+
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateFamily(FamilyImportModel familyImportModel, IHttpContextAccessor contextAccessor)
+        {
+            try
+            {
+                var entityToUpdate = await _familyAdministrationRepository.GetFamilyById(familyImportModel.FamilyId);
+
+                if (entityToUpdate != null)
+                {
+                    entityToUpdate.Name = familyImportModel.Name;
+
+                    var result = await _familyAdministrationRepository.UpdateFamily(entityToUpdate);
+
+                    if (result)
+                    {
+                        await Save(contextAccessor.HttpContext);
+                    }
+
+                    return result;
+                }
+
+                return false;
+
+            }catch (Exception exception)
+            {
+                await LogRepository.AddMessage(new LogEntity
+                {
+                    Message = $"Could not update family!",
                     ExMessage = exception.Message,
                     StackTrace = exception.StackTrace,
                     TimeStamp = DateTime.UtcNow,

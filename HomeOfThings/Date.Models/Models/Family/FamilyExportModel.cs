@@ -1,6 +1,6 @@
 ﻿using Date.Models.Models.User.Export;
 
-namespace Date.Models.Models
+namespace Date.Models.Models.Family
 {
     public class FamilyExportModel
     {
