@@ -13,6 +13,9 @@ interface IProps {
   disableFuture?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
+  title?: string;
+  paddingRight?: number;
+  paddingLeft?: number;
   handleDateChanged: (date: number, key: any) => void;
 }
 
@@ -23,6 +26,9 @@ const DateInput: React.FC<IProps> = (props) => {
     disabled,
     fullWidth,
     disableFuture,
+    title,
+    paddingLeft,
+    paddingRight,
     handleDateChanged,
   } = props;
 
@@ -39,16 +45,16 @@ const DateInput: React.FC<IProps> = (props) => {
       variant="standard"
       fullWidth={fullWidth}
       style={{
-        display: 'flex',
-        alignItems: 'flex-end',
+        paddingRight: `${paddingRight}px`,
+        paddingLeft: `${paddingLeft}px`,
       }}
       sx={{ m: 1, minWidth: 200 }}
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StyledDatePicker
           key="TEst-Picker"
-          className="test"
           disableFuture={disableFuture}
+          label={title}
           slotProps={{ textField: { variant: 'standard' } }}
           defaultValue={dayjs(new Date().toString())}
           value={dayjs(date)}

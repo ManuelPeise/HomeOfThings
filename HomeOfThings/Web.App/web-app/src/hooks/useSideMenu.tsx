@@ -4,9 +4,13 @@ import { ISideMenuItem } from '../lib/interfaces/menu/ISideMenuItem';
 import { FontSizeEnum } from '../lib/enums/FontSizeEnum';
 import { ColorTypeEnum } from '../lib/enums/ColorTypeEnum';
 import { RouteTypeEnum } from '../lib/enums/RouteTypeEnum';
-import { AccountCircle } from '@mui/icons-material';
+import { AdminPanelSettings, Home } from '@mui/icons-material';
+import { UserRoleEnum } from '../lib/enums/UserRoleEnum';
 
-export const useSideMenu = (userData: IUserData | null) => {
+export const useSideMenu = (
+  userData: IUserData | null,
+  userRoles: UserRoleEnum[]
+) => {
   const userDataRef = React.useRef<IUserData | null>(null);
 
   React.useEffect(() => {
@@ -15,27 +19,50 @@ export const useSideMenu = (userData: IUserData | null) => {
     }
   }, [userData]);
 
-  const items = React.useMemo((): ISideMenuItem[] => {
+  const getSystemAdminMenuItems = React.useCallback((): ISideMenuItem[] => {
     return [
       {
-        key: 1,
+        key: 2,
         sortOrder: 2,
-        title: 'Account',
+        title: 'System Administration',
         textSize: FontSizeEnum.MD,
         textColor: ColorTypeEnum.White,
-        icon: <AccountCircle />,
+        icon: <AdminPanelSettings />,
         iconColor: ColorTypeEnum.LightGray,
         disabled: userDataRef.current == null,
         sumItems: [
           {
-            title: 'Übersicht',
+            title: 'Family Administration',
             textSize: FontSizeEnum.SM,
-            to: RouteTypeEnum.Account,
+            to: RouteTypeEnum.FamilyAdministration,
           },
         ],
       },
     ];
   }, []);
+
+  const items = React.useMemo((): ISideMenuItem[] => {
+    return [
+      {
+        key: 1,
+        sortOrder: 1,
+        title: 'Home',
+        textSize: FontSizeEnum.MD,
+        textColor: ColorTypeEnum.White,
+        icon: <Home />,
+        iconColor: ColorTypeEnum.LightGray,
+        disabled: userDataRef.current == null,
+        sumItems: [
+          {
+            title: 'Home',
+            textSize: FontSizeEnum.SM,
+            to: RouteTypeEnum.Home,
+          },
+        ],
+      },
+      ...getSystemAdminMenuItems(),
+    ];
+  }, [getSystemAdminMenuItems]);
 
   return {
     menuItems: items,

@@ -1,30 +1,36 @@
-import React from "react";
+import React from 'react';
 import {
   StyledAppBar,
   StyledDrawer,
   StyledDrawerContainer,
   StyledDrawerList,
   StyledGrid,
-} from "../styledComponents";
-import { Box, CssBaseline, Divider, Grid, Toolbar } from "@mui/material";
-import { Menu, ArrowBackOutlined } from "@mui/icons-material";
-import Title from "../labels/Title";
-import TextButton from "../buttons/TextButton";
-import CollapsibleSideMenuItem from "../list/listItems/CollapsibleSideMenuItem";
-import { useSideMenu } from "../../hooks/useSideMenu";
-import { AuthContext } from "../../hooks/auth/useAuth";
-import { ColorTypeEnum } from "../../lib/enums/ColorTypeEnum";
-import { FontSizeEnum } from "../../lib/enums/FontSizeEnum";
-import { useNavigate } from "react-router-dom";
-import { RouteTypeEnum } from "../../lib/enums/RouteTypeEnum";
-import { StyledIconButton } from "../styledComponents/StyledButtons";
+} from '../styledComponents';
+import { Box, CssBaseline, Divider, Grid, Toolbar } from '@mui/material';
+import { Menu, ArrowBackOutlined } from '@mui/icons-material';
+import Title from '../labels/Title';
+import TextButton from '../buttons/TextButton';
+import CollapsibleSideMenuItem from '../list/listItems/CollapsibleSideMenuItem';
+import { useSideMenu } from '../../hooks/useSideMenu';
+import { AuthContext } from '../../hooks/auth/useAuth';
+import { ColorTypeEnum } from '../../lib/enums/ColorTypeEnum';
+import { FontSizeEnum } from '../../lib/enums/FontSizeEnum';
+import { useNavigate } from 'react-router-dom';
+import { RouteTypeEnum } from '../../lib/enums/RouteTypeEnum';
+import { StyledIconButton } from '../styledComponents/StyledButtons';
+import { UserRoleEnum } from '../../lib/enums/UserRoleEnum';
 
-const AppToolBar: React.FC = () => {
+interface IProps {
+  userRoles: UserRoleEnum[];
+}
+
+const AppToolBar: React.FC<IProps> = (props) => {
+  const { userRoles } = props;
   const { userData } = React.useContext(AuthContext);
 
   const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false);
   const [selectedItem, setSelectedItem] = React.useState<number | null>(null);
-  const { menuItems } = useSideMenu(userData);
+  const { menuItems } = useSideMenu(userData, userRoles);
   const navigate = useNavigate();
 
   const navigateToAuth = React.useCallback(() => {
@@ -50,12 +56,12 @@ const AppToolBar: React.FC = () => {
 
   return (
     <Grid item xs={12}>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <StyledAppBar>
           <Toolbar>
             <StyledIconButton
-              style={{ color: "#ffffff" }}
+              style={{ color: '#ffffff' }}
               onClick={toggleDrawer.bind(null, !drawerOpen)}
             >
               <Menu />
@@ -83,30 +89,30 @@ const AppToolBar: React.FC = () => {
         </StyledAppBar>
         <StyledDrawer keepMounted open={drawerOpen}>
           <StyledDrawerContainer
-            style={{ backgroundColor: "#000000" }}
+            style={{ backgroundColor: '#000000' }}
             role="presentation"
           >
             <StyledGrid container>
               <StyledGrid container justifyContent="flex-end">
                 <StyledIconButton
-                  style={{ padding: "1rem", color: "#ffffff" }}
+                  style={{ padding: '1rem', color: '#ffffff' }}
                   onClick={toggleDrawer.bind(null, false)}
                 >
                   <ArrowBackOutlined style={{ color: ColorTypeEnum.White }} />
                 </StyledIconButton>
               </StyledGrid>
-              <StyledGrid container style={{ paddingLeft: "16px" }}>
+              <StyledGrid container style={{ paddingLeft: '16px' }}>
                 <Title
-                  title={process.env.REACT_APP_TITLE ?? ""}
+                  title={process.env.REACT_APP_TITLE ?? ''}
                   textColor={ColorTypeEnum.White}
                   justify="flex-start"
                   fontSize={FontSizeEnum.MD}
                   padding="0"
                 />
               </StyledGrid>
-              <StyledGrid container style={{ paddingLeft: "16px" }}>
+              <StyledGrid container style={{ paddingLeft: '16px' }}>
                 <Title
-                  title={process.env.REACT_APP_SUB_TITLE ?? ""}
+                  title={process.env.REACT_APP_SUB_TITLE ?? ''}
                   textColor={ColorTypeEnum.LightGray}
                   justify="flex-start"
                   fontSize={FontSizeEnum.SM}

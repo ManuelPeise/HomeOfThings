@@ -3,6 +3,7 @@ using System;
 using Database.HotContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.HotContext.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240314204423_ExtendUserRoleEntity")]
+    partial class ExtendUserRoleEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,7 +158,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 14, 20, 46, 35, 975, DateTimeKind.Utc).AddTicks(6344),
+                            CreatedAt = new DateTime(2024, 3, 14, 20, 44, 23, 43, DateTimeKind.Utc).AddTicks(3941),
                             CreatedBy = "System",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "systemAdmin@hot.com",
@@ -163,9 +166,9 @@ namespace Database.HotContext.Migrations
                             FirstName = "",
                             IsActive = true,
                             LastName = "",
-                            Password = "UEBzc3dvcmQ0ZGVmNmI1My1iZTk5LTQ2MjItYmYzYi0yZWJmNzM1ZDY0MzI=",
-                            Salt = "4def6b53-be99-4622-bf3b-2ebf735d6432",
-                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"RoleId\":0,\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-14T20:46:35.9756346Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
+                            Password = "UEBzc3dvcmQ3NzQ1MjI1Yy02Mzg2LTQ0NzYtYWE5OC1hOGU3M2NiNjdiMWY=",
+                            Salt = "7745225c-6386-4476-aa98-a8e73cb67b1f",
+                            UserRolesJson = "{\"Name\":\"System Admin\",\"Description\":\"System Admin User\",\"RoleId\":0,\"Id\":3,\"CreatedBy\":\"System\",\"CreatedAt\":\"2024-03-14T20:44:23.0433943Z\",\"UpdatedBy\":null,\"UpdatedAt\":null}"
                         });
                 });
 
@@ -206,7 +209,7 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 3, 14, 20, 46, 35, 975, DateTimeKind.Utc).AddTicks(5951),
+                            CreatedAt = new DateTime(2024, 3, 14, 20, 44, 23, 43, DateTimeKind.Utc).AddTicks(3529),
                             CreatedBy = "System",
                             Description = "Default User",
                             Name = "User",
@@ -215,20 +218,20 @@ namespace Database.HotContext.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 3, 14, 20, 46, 35, 975, DateTimeKind.Utc).AddTicks(5958),
+                            CreatedAt = new DateTime(2024, 3, 14, 20, 44, 23, 43, DateTimeKind.Utc).AddTicks(3539),
                             CreatedBy = "System",
                             Description = "Admin User",
                             Name = "Admin",
-                            RoleId = 1
+                            RoleId = 0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 3, 14, 20, 46, 35, 975, DateTimeKind.Utc).AddTicks(5959),
+                            CreatedAt = new DateTime(2024, 3, 14, 20, 44, 23, 43, DateTimeKind.Utc).AddTicks(3540),
                             CreatedBy = "System",
                             Description = "System Admin User",
                             Name = "SystemAdmin",
-                            RoleId = 2
+                            RoleId = 0
                         });
                 });
 #pragma warning restore 612, 618

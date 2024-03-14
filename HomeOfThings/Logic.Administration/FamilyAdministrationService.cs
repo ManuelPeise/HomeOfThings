@@ -4,11 +4,14 @@ using Database.HotContext;
 using Date.Models.Entities;
 using Date.Models.Entities.Log;
 using Date.Models.Entities.User;
+using Date.Models.Enums;
 using Date.Models.Models.Family;
 using Logic.Shared;
 using Logic.Shared.Extensions.Family;
 using Logic.Shared.Extensions.User;
 using Microsoft.AspNetCore.Http;
+using MySqlX.XDevAPI.Common;
+using Newtonsoft.Json;
 
 namespace Logic.Administration
 {
@@ -115,6 +118,8 @@ namespace Logic.Administration
                     var userEntity = importModel.UserRegistrationModel.ToEntity();
                     userEntity.UserRolesJson = await _familyAdministrationRepository.GetAdminRoleJson();
                     userEntity.FamilyGuid = familyGuid;
+                    userEntity.UserRolesJson = JsonConvert.SerializeObject(new List<UserRoleEnum> { UserRoleEnum.Admin });
+                    userEntity.IsActive = false;
 
                     var saveResult = await _familyAdministrationRepository.AddFamilyAdmin(userEntity);
 
@@ -151,25 +156,44 @@ namespace Logic.Administration
         {
             try
             {
+                var databaseChanged = false;
+
                 var entityToUpdate = await _familyAdministrationRepository.GetFamilyById(familyImportModel.FamilyId);
+                
+                if (entityToUpdate != null && entityToUpdate.Name.Equals(familyImportModel.Name))
+                {
+                    entityToUpdate.Name = familyImportModel.Name;
+                    entityToUpdate.IsActive = familyImportModel.IsActive;
+
+                    databaseChanged = await _familyAdministrationRepository.UpdateFamily(entityToUpdate);
+                }
 
                 if (entityToUpdate != null)
                 {
-                    entityToUpdate.Name = familyImportModel.Name;
+                    var users = await _familyAdministrationRepository.GetFamilyUsers(entityToUpdate.FamilyGuid);
 
-                    var result = await _familyAdministrationRepository.UpdateFamily(entityToUpdate);
-
-                    if (result)
+                    foreach (var user in users)
                     {
-                        await Save(contextAccessor.HttpContext);
-                    }
+                        user.IsActive = familyImportModel.IsActive;
 
-                    return result;
+                        _familyAdministrationRepository.UpdateFamilyUser(user);
+
+                        databaseChanged = true;
+                    }
+                }
+
+
+                if (databaseChanged)
+                {
+                    await Save(contextAccessor.HttpContext);
+
+                    return true;
                 }
 
                 return false;
 
-            }catch (Exception exception)
+            }
+            catch (Exception exception)
             {
                 await LogRepository.AddMessage(new LogEntity
                 {

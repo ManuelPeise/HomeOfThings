@@ -20,6 +20,12 @@ export const useEndpoint = () => {
         return `${baseUrlRef.current}${ApiEndpointEnum.GetBudgetAccounts}`;
       case ApiEndpointEnum.ImportBudgetAccountDepartment:
         return `${baseUrlRef.current}${ApiEndpointEnum.ImportBudgetAccountDepartment}`;
+      case ApiEndpointEnum.GetFamilyMembers:
+        return `${baseUrlRef.current}${ApiEndpointEnum.GetFamilyMembers}`;
+      case ApiEndpointEnum.UpdateFamily:
+        return `${baseUrlRef.current}${ApiEndpointEnum.UpdateFamily}`;
+      case ApiEndpointEnum.SaveFamily:
+        return `${baseUrlRef.current}${ApiEndpointEnum.SaveFamily}`;
       default:
         return `${baseUrlRef.current}`;
     }

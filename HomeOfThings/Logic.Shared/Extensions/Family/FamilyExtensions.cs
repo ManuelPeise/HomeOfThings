@@ -8,12 +8,15 @@ namespace Logic.Shared.Extensions.Family
     {
         public static FamilyExportModel ToExportModel(this FamilyEntity entity)
         {
+            var creationDate = (DateTime)entity.CreatedAt;
             return new FamilyExportModel
             {
                 FamilyId = entity.Id,
                 FamilyGuid = entity.FamilyGuid,
                 Name = entity.Name,
                 IsActive = entity.IsActive,
+                CreatedAt = creationDate.ToString("dd-MM-yyyy"),
+                CreatedBy = entity.CreatedBy,
                 Users = new List<UserExportModel>()
             };
         }

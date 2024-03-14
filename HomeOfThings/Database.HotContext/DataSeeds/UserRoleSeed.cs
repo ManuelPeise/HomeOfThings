@@ -1,4 +1,5 @@
 ﻿using Date.Models.Entities.User;
+using Date.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,6 +15,7 @@ namespace Database.HotContext.DataSeeds
                 {
                     Id = 1,
                     Name = "User",
+                    RoleId = UserRoleEnum.User,
                     Description = "Default User",
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = "System"
@@ -22,6 +24,7 @@ namespace Database.HotContext.DataSeeds
                 {
                     Id = 2,
                     Name = "Admin",
+                    RoleId = UserRoleEnum.Admin,
                     Description = "Admin User",
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = "System"
@@ -29,7 +32,8 @@ namespace Database.HotContext.DataSeeds
                 new UserRoleEntity
                 {
                     Id = 3,
-                    Name = "System Admin",
+                    Name = "SystemAdmin",
+                    RoleId = UserRoleEnum.SystemAdmin,
                     Description = "System Admin User",
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = "System"

@@ -3,7 +3,7 @@ import { FormControl, TextField } from '@mui/material';
 import { ColorTypeEnum } from '../../lib/enums/ColorTypeEnum';
 
 export const StyledInputContainer = styled(FormControl)({
-  '& .MuiInputBase-root': {
+  '&.MuiInputBase-root': {
     border: 'none',
     minWidth: '120px',
     justifyContent: 'center',
@@ -11,7 +11,7 @@ export const StyledInputContainer = styled(FormControl)({
       cursor: 'not-allowed',
     },
   },
-  '& .MuiSelect-select.MuiSelect-select': {
+  '&.MuiSelect-select.MuiSelect-select': {
     padding: 5,
     backgroundColor: ColorTypeEnum.Transparent,
   },

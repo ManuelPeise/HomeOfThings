@@ -2,6 +2,7 @@
 using Data.Interfaces.UnitsOfWork;
 using Database.HotContext;
 using Date.Models.Entities.User;
+using Date.Models.Enums;
 using Date.Models.Models.User.Export;
 using Date.Models.Models.User.Import;
 using Logic.Shared.Extensions.User;
@@ -44,11 +45,11 @@ namespace Logic.Shared.UnitsOfWork
             {
                 exportModel = user.ToExportModel();
 
-                var userRoleJson = await GetUserRoles(user.UserRolesJson);
+                var userRoles = await GetUserRoles(user.UserRolesJson);
 
-                exportModel.UserRolesJson = userRoleJson;
+                exportModel.UserRoles = userRoles;
 
-                claims = await GetUserClaims(user, userRoleJson);
+                claims = await GetUserClaims(user, userRoles);
             }
 
             if (claims.Any())
@@ -74,23 +75,25 @@ namespace Logic.Shared.UnitsOfWork
         // UpdateProfileData
         #region private members
 
-        private async Task<string> GetUserRoles(string userRolesJson)
+        private async Task<IEnumerable<UserRoleEnum>> GetUserRoles(string userRolesJson)
         {
             var defaultRoles = await _userAdministartionRepository.GetUserRoles(new List<int> { 1 });
 
-            return !string.IsNullOrWhiteSpace(userRolesJson) ?
-                userRolesJson :
-                JsonConvert.SerializeObject(defaultRoles);
+            var roles = JsonConvert.DeserializeObject<List<UserRoleEntity>>(userRolesJson);
+
+            return roles.Any() ?
+                roles.Select(x => x.RoleId) :
+                defaultRoles.Select(x => x.RoleId);
         }
 
-        private async Task<List<Claim>> GetUserClaims(UserEntity user, string userRoleJson)
+        private async Task<List<Claim>> GetUserClaims(UserEntity user, IEnumerable<UserRoleEnum> userRoles)
         {
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Email),
                     new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(user)),
-                    new Claim("UserRoles", userRoleJson),
+                    new Claim("UserRoles", JsonConvert.SerializeObject(userRoles)),
                 };
 
             return await Task.FromResult(claims);

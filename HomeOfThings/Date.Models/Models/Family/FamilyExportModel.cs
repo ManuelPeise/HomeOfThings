@@ -8,6 +8,8 @@ namespace Date.Models.Models.Family
         public string Name { get; set; } = string.Empty;
         public Guid FamilyGuid { get; set; }
         public bool IsActive { get; set; }
+        public string CreatedAt { get; set; } = string.Empty;
+        public string CreatedBy { get; set; } = string.Empty;
         public List<UserExportModel> Users { get; set; } = new List<UserExportModel>();
     }
 }

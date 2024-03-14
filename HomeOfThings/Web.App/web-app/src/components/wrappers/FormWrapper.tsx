@@ -8,6 +8,8 @@ interface IProps extends PropsWithChildren {
   canSave: boolean;
   canCancel?: boolean;
   padding?: number;
+  cancelLabel?: string;
+  saveLabel?: string;
   handleCancelClick?: () => void;
   handleSaveClick: () => void | Promise<void>;
 }
@@ -19,6 +21,8 @@ const FormWrapper: React.FC<IProps> = (props) => {
     padding,
     canSave,
     canCancel,
+    cancelLabel,
+    saveLabel,
     handleCancelClick,
     handleSaveClick,
   } = props;
@@ -34,17 +38,22 @@ const FormWrapper: React.FC<IProps> = (props) => {
       <Grid item xs={12}>
         {children}
       </Grid>
-      <Grid container justifyContent="flex-end" alignItems="flex-end">
+      <Grid
+        style={{ paddingRight: '2rem' }}
+        container
+        justifyContent="flex-end"
+        alignItems="flex-end"
+      >
         {hasCancelButton && handleCancelClick && (
           <SaveOrCancelButton
-            title="Cancel"
+            title={cancelLabel ?? 'Cancel'}
             disabled={!canCancel}
             backgroundColor={ColorTypeEnum.Transparent}
             handleClick={handleCancelClick}
           />
         )}
         <SaveOrCancelButton
-          title="Save"
+          title={saveLabel ?? 'Save'}
           backgroundColor={ColorTypeEnum.Transparent}
           disabled={!canSave}
           handleClick={handleSaveClick}

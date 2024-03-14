@@ -2,6 +2,7 @@
 using Data.Interfaces.Interfaces.Repositories.Family;
 using Database.HotContext;
 using Date.Models.Models.Family;
+using Date.Models.Models.User.Export;
 using Logic.Administration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,12 +35,14 @@ namespace Service.Administration.Controllers
             return await service.GetFamily(familyId, _httpContextAccessor);
         }
 
-        [HttpGet("{familyId}", Name = "GetFamilies")]
+        [HttpGet( Name = "GetFamilies")]
         public async Task<List<FamilyExportModel>?> GetFamilies()
         {
             var service = new FamilyAdministrationService(_databaseContext, _familyAdministrationRepo);
 
-            return await service.GetFamilies(_httpContextAccessor);
+            var families = await service.GetFamilies(_httpContextAccessor);
+
+            return families;
         }
 
         [HttpPost(Name = "RegisterFamily")]
