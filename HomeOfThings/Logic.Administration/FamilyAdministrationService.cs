@@ -1,4 +1,6 @@
-﻿using Database.HotContext;
+﻿using Data.Interfaces.Interfaces.Clients;
+using Data.Ressources;
+using Database.HotContext;
 using Date.Models.Entities.Family;
 using Date.Models.Entities.Log;
 using Date.Models.Models.Family;
@@ -13,12 +15,14 @@ namespace Logic.Administration
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEmailClient? _emailClient;
         private bool disposedValue;
 
-        public FamilyAdministrationService(DatabaseContext context, IHttpContextAccessor httpContextAccessor) : base(context)
+        public FamilyAdministrationService(DatabaseContext context, IHttpContextAccessor httpContextAccessor, IEmailClient? emailClient) : base(context)
         {
             _databaseContext = context;
             _httpContextAccessor = httpContextAccessor;
+            _emailClient = emailClient;
         }
 
         public async Task<FamilyExportModel?> GetFamilyByGuid(Guid familyGuid)
@@ -112,11 +116,26 @@ namespace Logic.Administration
 
                     familyUnitOfWork.FamilyRepository.Add(familyEntity);
 
-                    await base.Save(_httpContextAccessor.HttpContext);
-
                     importModel.UserRegistrationModel.FamilyId = familyGuid;
 
-                    return await userAdministration.RegisterUser(importModel.UserRegistrationModel);
+                    var password = Guid.NewGuid().ToString();
+
+                    var success = await userAdministration.RegisterUser(importModel.UserRegistrationModel, password);
+
+                    if(success)
+                    {
+                        await base.Save(_httpContextAccessor.HttpContext);
+
+                        var body = await _emailClient.LoadMailHtmlFromRessources(RessourceNames.RegistrationMailBody);
+
+                        body = body.Replace("email", importModel.UserRegistrationModel.Email).Replace("passwordValue", password);
+
+                        var message = _emailClient.BuilMailMessage(importModel.UserRegistrationModel.Email, "Your account at MyApp", string.Empty, body);
+
+                        await _emailClient.SendMail(message);
+                    }
+
+                    return success;
                 }
 
             }

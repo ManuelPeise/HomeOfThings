@@ -68,13 +68,13 @@ namespace Logic.Administration
             }
         }
 
-        public async Task<bool> RegisterUser(UserRegistrationImportModel importModel)
+        public async Task<bool> RegisterUser(UserRegistrationImportModel importModel, string password, bool sendMail = false)
         {
             try
             {
                 using (var unitOfWork = new UserUnitOfWork(_databaseContext))
                 {
-                    var userEntity = importModel.ToEntity();
+                    var userEntity = importModel.ToEntity(password);
 
                     if (userEntity == null || string.IsNullOrWhiteSpace(userEntity.Email))
                     {

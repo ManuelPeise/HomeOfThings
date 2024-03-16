@@ -8,7 +8,7 @@ namespace Logic.Shared.Extensions.User
 {
     public static class UserExtensions
     {
-        public static UserEntity ToEntity(this UserRegistrationImportModel model)
+        public static UserEntity ToEntity(this UserRegistrationImportModel model, string? password = null)
         {
             var salt = string.IsNullOrWhiteSpace(model.Salt) ?
                 Guid.NewGuid().ToString() :
@@ -21,7 +21,7 @@ namespace Logic.Shared.Extensions.User
                 DateOfBirth = (DateTime)model.DateOfBirth,
                 Email = model.Email,
                 EmailConfirmed = false,
-                Password = PasswordHelper.GetEncodedPassword("P@ssword", salt),
+                Password = PasswordHelper.GetEncodedPassword(password?? "P@ssword", salt),
                 Salt = salt,
                 IsActive = true,
                 FamilyGuid = model.FamilyId

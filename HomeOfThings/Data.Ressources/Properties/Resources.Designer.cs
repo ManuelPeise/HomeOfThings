@@ -71,15 +71,16 @@ namespace Files {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;div style=&quot;display: flex; justify-content: center;&quot;&gt;
-        ///    &lt;div style=&quot;display: flex; flex-direction: column&quot;&gt;
-        ///        &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;
-        ///            &lt;h3 style=&quot;font-size: 1.2rem&quot;&gt;Thanks for registing your account!&lt;/h3&gt;
-        ///        &lt;/div&gt;
-        ///        &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;
-        ///            &lt;p style=&quot;font-size: 1rem&quot;&gt;Please confirm your email account, to complete registration.&lt;/p&gt;
-        ///        &lt;/div&gt;
-        ///        &lt;div style=&quot;display: flex; justify-content: cent [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;
+        ///  &lt;div style=&quot;display: flex; flex-direction: column&quot;&gt;
+        ///    &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;
+        ///      &lt;h3 style=&quot;font-size: 1.2rem&quot;&gt;Your account is successfully created!&lt;/h3&gt;
+        ///    &lt;/div&gt;
+        ///    &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;
+        ///      &lt;p style=&quot;font-size: 1rem; color: red&quot;&gt;Your user name sounds email.&lt;/p&gt;
+        ///    &lt;/div&gt;
+        ///    &lt;div style=&quot;display: flex; justify-content: center&quot;&gt;
+        ///      &lt;p style=&quot;font-size: 1rem; color: red&quot;&gt;Y [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string RegistrationMailBody {
             get {
