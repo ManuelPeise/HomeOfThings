@@ -7,7 +7,7 @@ import UnderlinedTextInput from '../../../components/inputs/textBoxes/Underlined
 import { useI18n } from '../../../hooks/useI18n';
 import Title from '../../../components/labels/Title';
 import { ColorTypeEnum } from '../../../lib/enums/ColorTypeEnum';
-import { IUserData } from '../../../lib/interfaces/auth/IUserData';
+import { IUserRegistration } from '../../../lib/interfaces/auth/IUserData';
 import DateInput from '../../../components/inputs/datePickers/DateInput';
 import FormWrapper from '../../../components/wrappers/FormWrapper';
 import { isValidEmail } from '../../../lib/validation';
@@ -24,19 +24,19 @@ const familyModel: IFamilyRegistration = {
   familyId: -1,
   familyGuid: '',
   name: '',
-  userRegistrationModel: {} as IUserData,
+  userRegistrationModel: {} as IUserRegistration,
   createdAt: '',
   createdBy: '',
   isActive: false,
 };
 
-const userModel: IUserData = {
+const userModel: IUserRegistration = {
   userId: -1,
   firstName: '',
   lastName: '',
   email: '',
   dateOfBirth: null,
-  userRoles: [UserRoleEnum.Admin],
+  userRole: UserRoleEnum.Admin,
   isActive: true,
 };
 
@@ -44,7 +44,7 @@ const familyValidationCallback = (family: IFamilyRegistration) => {
   return family.name.length > 0;
 };
 
-const userValidationCallback = (user: IUserData) => {
+const userValidationCallback = (user: IUserRegistration) => {
   return (
     user.firstName !== '' &&
     user.lastName !== '' &&
@@ -69,7 +69,10 @@ const AddFamilySection: React.FC<IProps> = (props) => {
     familyModel,
     familyValidationCallback
   );
-  const userForm = useFormModel<IUserData>(userModel, userValidationCallback);
+  const userForm = useFormModel<IUserRegistration>(
+    userModel,
+    userValidationCallback
+  );
 
   const handleCancel = React.useCallback(() => {
     familyForm.handleReset();
@@ -160,6 +163,7 @@ const AddFamilySection: React.FC<IProps> = (props) => {
             <Grid item xs={12} style={{ marginTop: '1.5rem' }}>
               <UnderlinedTextInput
                 property="name"
+                required={true}
                 title={getResource('administration.labelFamilyName')}
                 padding={8}
                 fullWidth
@@ -186,6 +190,7 @@ const AddFamilySection: React.FC<IProps> = (props) => {
             <Grid item xs={6}>
               <UnderlinedTextInput
                 property="firstName"
+                required={true}
                 type="text"
                 title={getResource('administration.labelFirstName')}
                 fullWidth
@@ -198,6 +203,7 @@ const AddFamilySection: React.FC<IProps> = (props) => {
             <Grid item xs={6}>
               <UnderlinedTextInput
                 property="lastName"
+                required={true}
                 type="text"
                 title={getResource('administration.labelLastName')}
                 fullWidth
@@ -210,6 +216,7 @@ const AddFamilySection: React.FC<IProps> = (props) => {
             <Grid item xs={6}>
               <UnderlinedTextInput
                 property="email"
+                required={true}
                 type="text"
                 title={getResource('administration.labelEmail')}
                 fullWidth
@@ -227,7 +234,7 @@ const AddFamilySection: React.FC<IProps> = (props) => {
                 disableFuture
                 paddingRight={20}
                 date={null}
-                handleDateChanged={userForm.handleNumberChanged}
+                handleDateChanged={userForm.handleDateChanged}
               />
             </Grid>
           </Grid>

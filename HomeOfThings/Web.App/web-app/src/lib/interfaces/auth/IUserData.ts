@@ -9,3 +9,13 @@ export interface IUserData {
   userRoles: UserRoleEnum[];
   isActive: boolean;
 }
+
+export interface IUserRegistration {
+  userId: number;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date | null;
+  email: string;
+  userRole: UserRoleEnum;
+  isActive: boolean;
+}

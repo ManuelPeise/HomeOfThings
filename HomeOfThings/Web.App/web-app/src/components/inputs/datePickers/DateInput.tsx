@@ -9,14 +9,14 @@ import dayjs from 'dayjs';
 
 interface IProps {
   property: string;
-  date: number | null;
+  date: Date | number | null;
   disableFuture?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
   title?: string;
   paddingRight?: number;
   paddingLeft?: number;
-  handleDateChanged: (date: number, key: any) => void;
+  handleDateChanged: (date: Date, key: any) => void;
 }
 
 const DateInput: React.FC<IProps> = (props) => {
@@ -32,11 +32,22 @@ const DateInput: React.FC<IProps> = (props) => {
     handleDateChanged,
   } = props;
 
+  const convertUTCDateToLocalDate = React.useCallback((date: Date) => {
+    var newDate = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60 * 1000
+    );
+    return newDate;
+  }, []);
+
   const handleChange = React.useCallback(
     (date: unknown) => {
-      handleDateChanged(date as number, property);
+      const newDate: Date = new Date(date as number);
+
+      var localDate = convertUTCDateToLocalDate(newDate);
+
+      handleDateChanged(localDate, property);
     },
-    [property, handleDateChanged]
+    [property, handleDateChanged, convertUTCDateToLocalDate]
   );
 
   return (
@@ -52,11 +63,11 @@ const DateInput: React.FC<IProps> = (props) => {
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StyledDatePicker
-          key="TEst-Picker"
           disableFuture={disableFuture}
           label={title}
+          format="DD.MM.YYYY"
           slotProps={{ textField: { variant: 'standard' } }}
-          defaultValue={dayjs(new Date().toString())}
+          defaultValue={dayjs(new Date().toDateString())}
           value={dayjs(date)}
           onChange={handleChange}
         />

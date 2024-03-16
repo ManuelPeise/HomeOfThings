@@ -2,9 +2,9 @@ import React from 'react';
 import DateInput from '../../components/inputs/datePickers/DateInput';
 
 const AccountDetailPage: React.FC = () => {
-  const [date, setDate] = React.useState<number>(0);
+  const [date, setDate] = React.useState<Date | null>(null);
 
-  const handleChange = React.useCallback((date: number, key: any) => {
+  const handleChange = React.useCallback((date: Date, key: any) => {
     setDate(date);
   }, []);
 

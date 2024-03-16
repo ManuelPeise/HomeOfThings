@@ -159,8 +159,6 @@ namespace Logic.Administration
 
                     familyEntity.IsActive = importModel.IsActive;
 
-                    familyUnitOfWork.FamilyRepository.Update(familyEntity);
-
                     var userEntities = await userAdministration.GetFamilyUsers(familyEntity.FamilyGuid);
 
                     foreach (var userEntity in userEntities)
@@ -168,8 +166,9 @@ namespace Logic.Administration
                         userEntity.IsActive = importModel.IsActive;
 
                         await userAdministration.UpdateUser(userEntity, false);
-
                     }
+
+                    familyUnitOfWork.FamilyRepository.Update(familyEntity);
 
                     await Save(_httpContextAccessor.HttpContext);
 

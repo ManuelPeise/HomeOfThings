@@ -31,6 +31,11 @@ namespace Logic.Shared
                 entities = _table.AsQueryable<T>();
             }
 
+            if (queryOption.WhereExpression != null)
+            {
+                return await entities.Where(queryOption.WhereExpression).ToListAsync();
+            }
+
             return await entities.ToListAsync();
         }
 
@@ -98,6 +103,10 @@ namespace Logic.Shared
                    .FirstOrDefaultAsync();
         }
         
+        public async Task<int> GetNextIndex()
+        {
+            return await _table.CountAsync() + 1;
+        }
         public void Add(T entity)
         {
             _context.Add(entity).State = EntityState.Added;

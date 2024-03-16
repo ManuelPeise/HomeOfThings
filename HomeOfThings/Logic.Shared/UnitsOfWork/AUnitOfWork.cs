@@ -21,7 +21,7 @@ namespace Logic.Shared.UnitsOfWork
             {
                 if (disposing)
                 {
-                    _context.Dispose();
+                    // _context.Dispose();
                 }
 
                 disposedValue = true;

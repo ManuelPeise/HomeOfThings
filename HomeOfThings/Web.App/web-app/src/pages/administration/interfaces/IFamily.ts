@@ -1,4 +1,7 @@
-import { IUserData } from '../../../lib/interfaces/auth/IUserData';
+import {
+  IUserData,
+  IUserRegistration,
+} from '../../../lib/interfaces/auth/IUserData';
 
 export interface IFamily {
   familyId: number;
@@ -15,7 +18,7 @@ export interface IFamilyRegistration {
   name: string;
   familyGuid: string;
   isActive: boolean;
-  userRegistrationModel: IUserData;
+  userRegistrationModel: IUserRegistration;
   createdAt: string;
   createdBy: string;
 }

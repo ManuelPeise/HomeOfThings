@@ -54,6 +54,18 @@ const useFormModel = <T>(
     [model, validationCallBack]
   );
 
+  const handleDateChanged = React.useCallback(
+    (value: Date, property: keyof T) => {
+      const update: T = { ...model, [property]: value };
+      setModel(update);
+
+      if (validationCallBack !== undefined) {
+        setIsValidModel(validationCallBack(update));
+      }
+    },
+    [model, validationCallBack]
+  );
+
   const handleBooleanChanged = React.useCallback(
     (value: boolean, property: keyof T) => {
       const update: T = { ...model, [property]: value };
@@ -79,6 +91,7 @@ const useFormModel = <T>(
     handleTextChanged,
     handleNumberChanged,
     handleBooleanChanged,
+    handleDateChanged,
     handleReset,
   };
 };

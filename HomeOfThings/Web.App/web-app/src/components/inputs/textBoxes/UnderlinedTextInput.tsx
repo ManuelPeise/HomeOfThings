@@ -12,6 +12,7 @@ interface IProps {
   unit?: string;
   alignValue?: 'start' | 'center' | 'end';
   padding?: number;
+  required?: boolean;
   handleChange: (value: string, key: any) => void;
 }
 
@@ -26,6 +27,7 @@ const UnderlinedTextInput: React.FC<IProps> = (props) => {
     unit,
     alignValue,
     padding,
+    required,
     handleChange,
   } = props;
 
@@ -65,6 +67,7 @@ const UnderlinedTextInput: React.FC<IProps> = (props) => {
           },
         },
       }}
+      required={required}
       variant="standard"
       onChange={onChange}
     />

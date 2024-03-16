@@ -81,13 +81,17 @@ namespace Logic.Administration
                         return false;
                     }
 
+                    unitOfWork.UserRepository.Add(userEntity);
+
+                    var userId = await unitOfWork.UserRepository.GetNextIndex();
+
                     var (accessRightEntities, roleEntities) = await GetUserAccessRightsAndRoles(unitOfWork, importModel.UserRole);
 
                     var userRights = (from right in accessRightEntities
                                       select new UserAccessRightEntity
                                       {
                                           UserRightId = right.Id,
-                                          UserId = userEntity.Id,
+                                          UserId = userId,
                                           Deny = false,
                                           Write = importModel.UserRole == UserRoleEnum.SystemAdmin || importModel.UserRole == UserRoleEnum.Admin ?
                                           true : false,
@@ -98,12 +102,12 @@ namespace Logic.Administration
                     var userRoles = (from role in roleEntities
                                      select new UserRolesEntity
                                      {
-                                         UserId = userEntity.UserId,
+                                         UserId = userId,
                                          UserRolesId = role.Id,
 
                                      }).ToList();
 
-                    unitOfWork.UserRepository.Add(userEntity);
+                    
 
                     userRights.ForEach(r =>
                     {
@@ -114,8 +118,6 @@ namespace Logic.Administration
                     {
                         unitOfWork.UserRolesRepository.Add(r);
                     });
-
-                    await Save(_httpContextAccessor.HttpContext);
 
                     return true;
                 }
@@ -172,16 +174,16 @@ namespace Logic.Administration
 
         #region private members
 
-        private async Task<(List<UserRightEntity>, List<UserRoleEntity>)> GetUserAccessRightsAndRoles(UserUnitOfWork unitOfWork, UserRoleEnum userRole, List<UserRoleEnum>? roles = null)
+        private async Task<(List<UserRightEntity>, List<UserRoleEntity>)> GetUserAccessRightsAndRoles(UserUnitOfWork unitOfWork, UserRoleEnum userRole)
         {
             switch (userRole)
             {
                 case UserRoleEnum.SystemAdmin:
-                    return await GetAccessRightsAndRoles(unitOfWork, _sytemAdminModules, new List<UserRoleEnum> { userRole });
+                    return await GetAccessRightsAndRoles(unitOfWork, _sytemAdminModules, userRole);
                 case UserRoleEnum.Admin:
-                    return await GetAccessRightsAndRoles(unitOfWork, _adminModules, new List<UserRoleEnum> { userRole });
+                    return await GetAccessRightsAndRoles(unitOfWork, _adminModules, userRole);
                 case UserRoleEnum.User:
-                    return await GetAccessRightsAndRoles(unitOfWork, _defaultUserModules, new List<UserRoleEnum> { userRole });
+                    return await GetAccessRightsAndRoles(unitOfWork, _defaultUserModules, userRole);
                 default: throw new ArgumentOutOfRangeException(nameof(userRole));
             }
         }
@@ -195,19 +197,19 @@ namespace Logic.Administration
             });
         }
 
-        private async Task<List<UserRoleEntity>> GetUserRoles(UserUnitOfWork unitOfWork, List<UserRoleEnum> userRoles)
+        private async Task<List<UserRoleEntity>> GetUserRoles(UserUnitOfWork unitOfWork, UserRoleEnum userRole)
         {
             return await unitOfWork.UserRoleRepository.GetAllAsync(new QueryOption<UserRoleEntity>
             {
                 AsNoTracking = true,
-                WhereExpression = x => userRoles.Contains(x.RoleKey)
+                WhereExpression = x => x.RoleKey == userRole
             });
         }
 
-        private async Task<(List<UserRightEntity>, List<UserRoleEntity>)> GetAccessRightsAndRoles(UserUnitOfWork unitOfWork, List<AppModuleEnum> modulesToAdd, List<UserRoleEnum> rolesToAdd)
+        private async Task<(List<UserRightEntity>, List<UserRoleEntity>)> GetAccessRightsAndRoles(UserUnitOfWork unitOfWork, List<AppModuleEnum> modulesToAdd, UserRoleEnum roleToAdd)
         {
             var userRights = await GetUserRights(unitOfWork, modulesToAdd);
-            var userRoles = await GetUserRoles(unitOfWork, rolesToAdd);
+            var userRoles = await GetUserRoles(unitOfWork, roleToAdd);
 
             return (userRights, userRoles);
         }
@@ -222,7 +224,7 @@ namespace Logic.Administration
             {
                 if (disposing)
                 {
-                    _databaseContext.Dispose();
+                    // _databaseContext.Dispose();
                 }
 
                 disposedValue = true;
