@@ -1,18 +1,17 @@
-﻿using Date.Models.Entities;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Data.Interfaces.Interfaces.Repositories
 {
-    public interface IRepositoryBase<T>: IDisposable where T : AEntity
+    public interface IRepositoryBase<T>: IDisposable where T : class
     {
-        Task<IList<T>> GetAllAsync(
-         Expression<Func<T, bool>>? expression = null, bool asNoTracking = true);
-        Task<T?> Get(Expression<Func<T, bool>> expression, bool asNoTracking = true);
-        Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> expression, bool asNoTracking = true);
-        Task<bool> Insert(T entity);
-        Task<bool> InsertIfNotExists(T entity, Expression<Func<T, bool>> expression);
-        Task Delete(int id);
-        void DeleteRange(IEnumerable<T> entities);
+        Task<List<T2>> GetAllAsync<T2>(IQueryOption<T> queryOption, Expression<Func<T, T2>>? selectExpression = null);
+        Task<List<T>> GetAllAsync(IQueryOption<T> queryOption);
+        Task<T> GetAsync(IQueryOption<T> queryOption);
+        Task<T2> GetAsync<T2>(IQueryOption<T> queryOption, Expression<Func<T, T2>>? selectExpression = null);
+        bool Remove(int id);
+        void Add(T entity);
         void Update(T entity);
+        Task<int> SaveAsync();
+       
     }
 }

@@ -25,12 +25,12 @@ namespace Logic.Shared
 
             foreach (var entry in entries)
             {
-                ((AEntity)entry.Entity).UpdatedAt = DateTime.Now;
-                ((AEntity)entry.Entity).UpdatedBy = user;
+                ((AEntityBase)entry.Entity).UpdatedAt = DateTime.Now;
+                ((AEntityBase)entry.Entity).UpdatedBy = user;
                 if (entry.State == EntityState.Added)
                 {
-                    ((AEntity)entry.Entity).CreatedAt = DateTime.Now;
-                    ((AEntity)entry.Entity).CreatedBy = user;
+                    ((AEntityBase)entry.Entity).CreatedAt = DateTime.Now;
+                    ((AEntityBase)entry.Entity).CreatedBy = user;
                 }
             }
 

@@ -13,28 +13,34 @@ namespace Database.HotContext.DataSeeds
             {
                 new UserRoleEntity
                 {
-                    Id = 1,
+                    UserRoleId = 1,
                     Name = "User",
-                    RoleId = UserRoleEnum.User,
+                    RoleKey = UserRoleEnum.User,
                     Description = "Default User",
+                    UpdatedAt = DateTime.UtcNow,
+                    UpdatedBy = "System",
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = "System"
                 },
                 new UserRoleEntity
                 {
-                    Id = 2,
+                    UserRoleId = 2,
                     Name = "Admin",
-                    RoleId = UserRoleEnum.Admin,
+                    RoleKey = UserRoleEnum.Admin,
                     Description = "Admin User",
+                    UpdatedAt = DateTime.UtcNow,
+                    UpdatedBy = "System",
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = "System"
                 },
                 new UserRoleEntity
                 {
-                    Id = 3,
+                    UserRoleId = 3,
                     Name = "SystemAdmin",
-                    RoleId = UserRoleEnum.SystemAdmin,
+                    RoleKey = UserRoleEnum.SystemAdmin,
                     Description = "System Admin User",
+                    UpdatedAt = DateTime.UtcNow,
+                    UpdatedBy = "System",
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = "System"
                 }

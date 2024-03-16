@@ -30,4 +30,7 @@ app.UseAuthentication();
 
 app.MapControllers();
 
+DatabaseMaintanance.MigrateDatabase(builder.Services);
+DatabaseMaintanance.SeedUserData(builder.Services, builder.Configuration);
+
 app.Run();

@@ -1,213 +1,223 @@
-﻿using Data.Interfaces.Interfaces.Repositories;
-using Data.Interfaces.Interfaces.Repositories.Family;
-using Database.HotContext;
-using Date.Models.Entities;
+﻿using Database.HotContext;
+using Date.Models.Entities.Family;
 using Date.Models.Entities.Log;
-using Date.Models.Entities.User;
-using Date.Models.Enums;
 using Date.Models.Models.Family;
 using Logic.Shared;
 using Logic.Shared.Extensions.Family;
-using Logic.Shared.Extensions.User;
+using Logic.Shared.UnitsOfWork;
 using Microsoft.AspNetCore.Http;
-using MySqlX.XDevAPI.Common;
-using Newtonsoft.Json;
 
 namespace Logic.Administration
 {
-    public class FamilyAdministrationService : ALogicBase
+    public class FamilyAdministrationService : ALogicBase, IDisposable
     {
-        private readonly IFamilyAdministrationRepository _familyAdministrationRepository;
+        private readonly DatabaseContext _databaseContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private bool disposedValue;
 
-        public FamilyAdministrationService(DatabaseContext context, IFamilyAdministrationRepository familyAdministrationRepository) : base(context)
+        public FamilyAdministrationService(DatabaseContext context, IHttpContextAccessor httpContextAccessor) : base(context)
         {
-            _familyAdministrationRepository = familyAdministrationRepository;
+            _databaseContext = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<FamilyExportModel?> GetFamily(int id, IHttpContextAccessor contextAccessor)
+        public async Task<FamilyExportModel?> GetFamilyByGuid(Guid familyGuid)
         {
             try
             {
-                var entity = await _familyAdministrationRepository.GetFamilyById(id);
-
-                if (entity != null)
+                using (var familyUnitOfWork = new FamilyUnitOfWork(_databaseContext))
                 {
-                    var members = await _familyAdministrationRepository.GetFamilyUsers(entity.FamilyGuid);
-
-                    var exportModel = entity.ToExportModel();
-                    exportModel.Users = (from member in members
-                                         select member.ToExportModel())
-                                         .ToList();
-
-                    return exportModel;
-                }
-
-                return null;
-            }
-            catch (Exception exception)
-            {
-
-                await LogRepository.AddMessage(new LogEntity
-                {
-                    Message = $"Could not load family [{id}] from database",
-                    ExMessage = exception.Message,
-                    StackTrace = exception.StackTrace,
-                    TimeStamp = DateTime.UtcNow,
-                    Trigger = nameof(FamilyAdministrationService)
-                });
-
-                await Save(contextAccessor.HttpContext);
-
-                return null;
-            }
-        }
-
-        public async Task<List<FamilyExportModel>> GetFamilies(IHttpContextAccessor contextAccessor)
-        {
-            try
-            {
-                var exportModels = new List<FamilyExportModel>();
-
-                var familyEntities = await _familyAdministrationRepository.GetFamilies();
-
-                if (familyEntities != null && familyEntities.Any())
-                {
-                    foreach (var familyEntity in familyEntities)
+                    var entity = await familyUnitOfWork.FamilyRepository.GetAsync(new QueryOption<FamilyEntity>
                     {
-                        var members = await _familyAdministrationRepository.GetFamilyUsers(familyEntity.FamilyGuid);
+                        AsNoTracking = true,
+                        WhereExpression = x => x.FamilyGuid == familyGuid
+                    });
 
-                        var exportModel = familyEntity.ToExportModel();
-                        exportModel.Users = (from member in members
-                                             select member.ToExportModel())
-                                             .ToList();
-
-                        exportModels.Add(exportModel);
+                    if(entity == null) 
+                    {
+                        return null;
                     }
+
+                    return entity.ToExportModel();
                 }
-
-                return exportModels;
-
             }
             catch (Exception exception)
             {
                 await LogRepository.AddMessage(new LogEntity
                 {
-                    Message = $"Could not load families from database",
+                    Message = $"Cannot load familie from database [{familyGuid}]!",
                     ExMessage = exception.Message,
-                    StackTrace = exception.StackTrace,
+                    StackTrace = exception.StackTrace ?? string.Empty,
                     TimeStamp = DateTime.UtcNow,
-                    Trigger = nameof(FamilyAdministrationService)
+                    Trigger = nameof(UserAdministrationService),
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = nameof(UserAdministrationService)
                 });
 
-                await Save(contextAccessor.HttpContext);
+                await Save(_httpContextAccessor.HttpContext);
+
+                return null;
+            }
+        }
+
+        public async Task<List<FamilyExportModel>> GetFamilies()
+        {
+            try
+            {
+                using (var familyUnitOfWork = new FamilyUnitOfWork(_databaseContext))
+                {
+                    var entities = await familyUnitOfWork.FamilyRepository.GetAllAsync(new QueryOption<FamilyEntity>
+                    {
+                        AsNoTracking = true,
+                    });
+
+                    if (entities == null || !entities.Any())
+                    {
+                        return new List<FamilyExportModel>();
+                    }
+
+                    return (from entity in entities
+                            select entity.ToExportModel()).ToList();
+                }
+            }
+            catch (Exception exception)
+            {
+                await LogRepository.AddMessage(new LogEntity
+                {
+                    Message = "Cannot load families from database!",
+                    ExMessage = exception.Message,
+                    StackTrace = exception.StackTrace ?? string.Empty,
+                    TimeStamp = DateTime.UtcNow,
+                    Trigger = nameof(UserAdministrationService),
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = nameof(UserAdministrationService)
+                });
+
+                await Save(_httpContextAccessor.HttpContext);
 
                 return new List<FamilyExportModel>();
             }
         }
 
-        public async Task<bool> RegisterFamily(FamilyImportModel importModel, IHttpContextAccessor contextAccessor)
+        public async Task<bool> RegisterNewFamily(FamilyImportModel importModel)
         {
             try
             {
-                var familyGuid = Guid.NewGuid();
-
-                var result = await _familyAdministrationRepository.AddFamily(importModel.ToEntity(familyGuid));
-
-                if (result)
+                using (var userAdministration = new UserAdministrationService(_databaseContext, _httpContextAccessor, null))
+                using (var familyUnitOfWork = new FamilyUnitOfWork(_databaseContext))
                 {
-                    var userEntity = importModel.UserRegistrationModel.ToEntity();
-                    userEntity.UserRolesJson = await _familyAdministrationRepository.GetAdminRoleJson();
-                    userEntity.FamilyGuid = familyGuid;
-                    userEntity.UserRolesJson = JsonConvert.SerializeObject(new List<UserRoleEnum> { UserRoleEnum.Admin });
-                    userEntity.IsActive = false;
+                    var familyGuid = Guid.NewGuid();
 
-                    var saveResult = await _familyAdministrationRepository.AddFamilyAdmin(userEntity);
+                    var familyEntity = importModel.ToEntity(familyGuid);
 
-                    if (saveResult)
-                    {
-                        await Save(contextAccessor.HttpContext);
+                    familyUnitOfWork.FamilyRepository.Add(familyEntity);
 
-                        return true;
-                    }
+                    await base.Save(_httpContextAccessor.HttpContext);
 
+                    importModel.UserRegistrationModel.FamilyId = familyGuid;
+
+                    return await userAdministration.RegisterUser(importModel.UserRegistrationModel);
                 }
-
-                return false;
 
             }
             catch (Exception exception)
             {
                 await LogRepository.AddMessage(new LogEntity
                 {
-                    Message = $"Could not load families from database",
+                    Message = "Cannot register new falily!",
                     ExMessage = exception.Message,
-                    StackTrace = exception.StackTrace,
+                    StackTrace = exception.StackTrace ?? string.Empty,
                     TimeStamp = DateTime.UtcNow,
-                    Trigger = nameof(FamilyAdministrationService)
+                    Trigger = nameof(UserAdministrationService),
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = nameof(UserAdministrationService)
                 });
 
-                await Save(contextAccessor.HttpContext);
+                await Save(_httpContextAccessor.HttpContext);
 
                 return false;
             }
         }
 
-        public async Task<bool> UpdateFamily(FamilyImportModel familyImportModel, IHttpContextAccessor contextAccessor)
+        public async Task<bool> UpdateFamily(FamilyImportModel importModel)
         {
             try
             {
-                var databaseChanged = false;
-
-                var entityToUpdate = await _familyAdministrationRepository.GetFamilyById(familyImportModel.FamilyId);
-                
-                if (entityToUpdate != null && entityToUpdate.Name.Equals(familyImportModel.Name))
+                using (var userAdministration = new UserAdministrationService(_databaseContext, _httpContextAccessor, null))
+                using (var familyUnitOfWork = new FamilyUnitOfWork(_databaseContext))
                 {
-                    entityToUpdate.Name = familyImportModel.Name;
-                    entityToUpdate.IsActive = familyImportModel.IsActive;
-
-                    databaseChanged = await _familyAdministrationRepository.UpdateFamily(entityToUpdate);
-                }
-
-                if (entityToUpdate != null)
-                {
-                    var users = await _familyAdministrationRepository.GetFamilyUsers(entityToUpdate.FamilyGuid);
-
-                    foreach (var user in users)
+                    var familyEntity = await familyUnitOfWork.FamilyRepository.GetAsync(new QueryOption<FamilyEntity>
                     {
-                        user.IsActive = familyImportModel.IsActive;
+                        AsNoTracking = true,
+                        WhereExpression = x => x.FamilyId == importModel.FamilyId,
+                    });
 
-                        _familyAdministrationRepository.UpdateFamilyUser(user);
-
-                        databaseChanged = true;
+                    if (familyEntity == null)
+                    {
+                        return false;
                     }
-                }
 
+                    familyEntity.IsActive = importModel.IsActive;
 
-                if (databaseChanged)
-                {
-                    await Save(contextAccessor.HttpContext);
+                    familyUnitOfWork.FamilyRepository.Update(familyEntity);
+
+                    var userEntities = await userAdministration.GetFamilyUsers(familyEntity.FamilyGuid);
+
+                    foreach (var userEntity in userEntities)
+                    {
+                        userEntity.IsActive = importModel.IsActive;
+
+                        await userAdministration.UpdateUser(userEntity, false);
+
+                    }
+
+                    await Save(_httpContextAccessor.HttpContext);
 
                     return true;
                 }
 
-                return false;
 
             }
             catch (Exception exception)
             {
                 await LogRepository.AddMessage(new LogEntity
                 {
-                    Message = $"Could not update family!",
+                    Message = "Cannot update falily!",
                     ExMessage = exception.Message,
-                    StackTrace = exception.StackTrace,
+                    StackTrace = exception.StackTrace ?? string.Empty,
                     TimeStamp = DateTime.UtcNow,
-                    Trigger = nameof(FamilyAdministrationService)
+                    Trigger = nameof(UserAdministrationService),
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = nameof(UserAdministrationService)
                 });
 
-                await Save(contextAccessor.HttpContext);
+                await Save(_httpContextAccessor.HttpContext);
 
                 return false;
             }
         }
+
+        #region dispose
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _databaseContext.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }

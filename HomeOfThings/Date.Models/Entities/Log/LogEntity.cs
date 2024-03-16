@@ -1,7 +1,12 @@
-﻿namespace Date.Models.Entities.Log
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Date.Models.Entities.Log
 {
-    public class LogEntity: AEntity
+    public class LogEntity: AEntityBase, IEntityBase
     {
+        public int Id => LogMessageId;
+        [Key]
+        public int LogMessageId { get; set; }
         public string Message { get; set; } = string.Empty;
         public string ExMessage { get; set; } = string.Empty;
         public string? StackTrace { get; set; }

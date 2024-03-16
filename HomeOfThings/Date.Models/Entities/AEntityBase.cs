@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Date.Models.Entities
+﻿namespace Date.Models.Entities
 {
-    public abstract class AEntity
+    public class AEntityBase
     {
-        [Key]
-        public int Id { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime? CreatedAt { get; set; }
         public string? UpdatedBy { get; set; }

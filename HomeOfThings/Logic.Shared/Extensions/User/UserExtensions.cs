@@ -3,7 +3,6 @@ using Date.Models.Enums;
 using Date.Models.Models.User.Export;
 using Date.Models.Models.User.Import;
 using Logic.Shared.Helpers;
-using Newtonsoft.Json;
 
 namespace Logic.Shared.Extensions.User
 {
@@ -15,7 +14,6 @@ namespace Logic.Shared.Extensions.User
                 Guid.NewGuid().ToString() :
                 model.Salt;
 
-
             return new UserEntity
             {
                 FirstName = model.FirstName,
@@ -25,7 +23,9 @@ namespace Logic.Shared.Extensions.User
                 EmailConfirmed = false,
                 Password = PasswordHelper.GetEncodedPassword("P@ssword", salt),
                 Salt = salt,
-                IsActive = model.IsActive,
+                IsActive = true,
+                FamilyGuid = model.FamilyId
+                
             };
         }
 
@@ -33,21 +33,21 @@ namespace Logic.Shared.Extensions.User
         {
             var roles = new List<int>();
 
-            try
-            {
-                if (entity.UserRolesJson.Length > 0)
-                {
-                    roles = JsonConvert.DeserializeObject<List<int>>(entity.UserRolesJson);
-                }
+            //try
+            //{
+            //    if (entity.UserRolesJson.Length > 0)
+            //    {
+            //        roles = JsonConvert.DeserializeObject<List<int>>(entity.UserRolesJson);
+            //    }
 
-            }catch (Exception)
-            {
-                roles = new List<int>();
-            }
+            //}catch (Exception)
+            //{
+            //    roles = new List<int>();
+            //}
 
             return new UserExportModel
             {
-                UserId = entity.Id,
+                UserId = entity.UserId,
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
                 Email = entity.Email,

@@ -1,64 +1,61 @@
-﻿using Data.Interfaces.Interfaces.Repositories.Administration;
-using Data.Interfaces.Interfaces.Repositories.Family;
-using Database.HotContext;
+﻿using Database.HotContext;
 using Date.Models.Models.Family;
-using Date.Models.Models.User.Export;
 using Logic.Administration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Service.Administration.Controllers
 {
     public class FamilyAdministrationController : ApiControllerBase
     {
-        private readonly IFamilyAdministrationRepository _familyAdministrationRepo;
+       
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly DatabaseContext _databaseContext;
-        public FamilyAdministrationController(DatabaseContext databaseContext, IFamilyAdministrationRepository familyAdministrationRepo, IHttpContextAccessor httpContextAccessor)
+        
+        public FamilyAdministrationController(DatabaseContext databaseContext, IHttpContextAccessor httpContextAccessor)
         {
-            _familyAdministrationRepo = familyAdministrationRepo;
             _httpContextAccessor = httpContextAccessor;
             _databaseContext = databaseContext;
         }
-
+        
+        // [ApiAuthorization(UserRoleEnum.SystemAdmin)]
         [HttpGet( Name = "GetFamilyById")]
-        public async Task<FamilyExportModel?> GetFamilyById(int familyId)
+        public async Task<FamilyExportModel?> GetFamilyById(Guid familyId)
         {
-            var service = new FamilyAdministrationService(_databaseContext, _familyAdministrationRepo);
-
-            return await service.GetFamily(familyId, _httpContextAccessor);
+            using(var service = new FamilyAdministrationService(_databaseContext, _httpContextAccessor))
+            {
+                return await service.GetFamilyByGuid(familyId);
+            }
         }
-
+        
+        // [ApiAuthorization(UserRoleEnum.SystemAdmin)]
         [HttpGet( Name = "GetFamilies")]
         public async Task<List<FamilyExportModel>?> GetFamilies()
         {
-            var service = new FamilyAdministrationService(_databaseContext, _familyAdministrationRepo);
-
-            var families = await service.GetFamilies(_httpContextAccessor);
-
-            return families;
+            using (var service = new FamilyAdministrationService(_databaseContext, _httpContextAccessor))
+            {
+                return await service.GetFamilies();
+            }
         }
 
         [HttpPost(Name = "RegisterFamily")]
         public async Task<bool> RegisterFamily([FromBody] FamilyImportModel model)
         {
-            var service = new FamilyAdministrationService(_databaseContext, _familyAdministrationRepo);
-
-            return await service.RegisterFamily(model, _httpContextAccessor);
+            using (var service = new FamilyAdministrationService(_databaseContext, _httpContextAccessor))
+            {
+                return await service.RegisterNewFamily(model);
+            }
         }
 
         [HttpPost(Name = "UpdateFamily")]
         public async Task<bool> UpdateFamily([FromBody] FamilyImportModel model)
         {
-            var service = new FamilyAdministrationService(_databaseContext, _familyAdministrationRepo);
-
-            return await service.UpdateFamily(model, _httpContextAccessor);
+            using (var service = new FamilyAdministrationService(_databaseContext, _httpContextAccessor))
+            {
+                return await service.UpdateFamily(model);
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Logic.Shared.Extensions.Family
             var creationDate = (DateTime)entity.CreatedAt;
             return new FamilyExportModel
             {
-                FamilyId = entity.Id,
+                FamilyId = entity.FamilyId,
                 FamilyGuid = entity.FamilyGuid,
                 Name = entity.Name,
                 IsActive = entity.IsActive,

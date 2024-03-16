@@ -15,4 +15,10 @@
     <ProjectReference Include="..\Date.Models\Date.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\Repositories\Administration\" />
+    <Folder Include="Interfaces\Repositories\Family\" />
+    <Folder Include="Interfaces\Repositories\User\" />
+  </ItemGroup>
+
 </Project>

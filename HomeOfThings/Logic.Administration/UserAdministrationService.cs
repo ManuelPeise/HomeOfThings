@@ -1,227 +1,228 @@
 ﻿using Data.Interfaces.Interfaces.Clients;
-using Data.Interfaces.Interfaces.Repositories.Administration;
-using Data.Interfaces.Interfaces.Repositories.User;
-using Data.Ressources;
 using Database.HotContext;
 using Date.Models.Entities.Log;
-using Date.Models.Models.User.Export;
+using Date.Models.Entities.User;
+using Date.Models.Enums;
 using Date.Models.Models.User.Import;
 using Logic.Shared;
 using Logic.Shared.Extensions.User;
+using Logic.Shared.UnitsOfWork;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 
 namespace Logic.Administration
 {
-    public class UserAdministrationService : ALogicBase, IUserAdministrationService
+    public class UserAdministrationService : ALogicBase, IDisposable
     {
-        private readonly IUserAdministrationRepository _userAdministationRepository;
-        private readonly IConfiguration _config;
-        private readonly IEmailClient _emailClient;
+        private readonly DatabaseContext _databaseContext;
+        private readonly IEmailClient? _emailClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private bool disposedValue;
 
+        #region default userModules
+
+        private readonly List<AppModuleEnum> _sytemAdminModules = new List<AppModuleEnum> { AppModuleEnum.FamilyAdministration };
+        private readonly List<AppModuleEnum> _adminModules = new List<AppModuleEnum> { AppModuleEnum.FamilyManagement };
+        private readonly List<AppModuleEnum> _defaultUserModules = new List<AppModuleEnum>();
+
+        #endregion
+
         public UserAdministrationService(
-            DatabaseContext context, 
-            IUserAdministrationRepository userAdministationRepository, 
-            IConfiguration config, 
-            IEmailClient emailClient) : base(context)
+            DatabaseContext context,
+            IHttpContextAccessor httpContextAccessor,
+            IEmailClient? emailClient = null) : base(context)
         {
-            _userAdministationRepository = userAdministationRepository;
-            _config = config;
+            _databaseContext = context;
             _emailClient = emailClient;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<UserExportModel>> GetAllUsers(IHttpContextAccessor contextAccessor)
+        public async Task<List<UserEntity>> GetFamilyUsers(Guid familyGuid)
         {
             try
             {
-                var users = await _userAdministationRepository.GetAllUsersAsync();
-
-                return (from user in users select user.ToExportModel()).ToList();
-
-            }
-            catch (Exception exception)
-            {
-                await LogRepository.AddMessage(new LogEntity
+                using (var unitOfWork = new UserUnitOfWork(_databaseContext))
                 {
-                    Message = $"Could not get users from database!",
-                    ExMessage = exception.Message,
-                    StackTrace = exception.StackTrace ?? string.Empty,
-                    TimeStamp = DateTime.UtcNow,
-                    Trigger = nameof(UserAdministrationService),
-                    CreatedAt = DateTime.UtcNow,
-                    CreatedBy = nameof(UserAdministrationService),
-                });
-
-                await Save(contextAccessor.HttpContext);
-
-                return new List<UserExportModel>();
-            }
-        }
-
-        public async Task<UserExportModel?> GetUserById(int userId, IHttpContextAccessor contextAccessor)
-        {
-            try
-            {
-                var user = await _userAdministationRepository.GetUserByIdAsync(userId);
-
-                if(user == null)
-                {
-                    return null;
+                    return await unitOfWork.UserRepository.GetAllAsync(new QueryOption<UserEntity>
+                    {
+                        AsNoTracking = true,
+                        WhereExpression = x => x.FamilyGuid == familyGuid
+                    });
                 }
-
-                return user.ToExportModel();
-
             }
             catch (Exception exception)
             {
                 await LogRepository.AddMessage(new LogEntity
                 {
-                    Message = $"Could not get user [{userId}] from database!",
+                    Message = $"Cannot load users for family [{familyGuid}]!",
                     ExMessage = exception.Message,
                     StackTrace = exception.StackTrace ?? string.Empty,
                     TimeStamp = DateTime.UtcNow,
                     Trigger = nameof(UserAdministrationService),
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = nameof(UserAdministrationService),
+                    CreatedBy = nameof(UserAdministrationService)
                 });
 
-                await Save(contextAccessor.HttpContext);
+                await Save(_httpContextAccessor.HttpContext);
 
-                return null;
+                return new List<UserEntity>();
             }
         }
 
-        public async Task<UserExportModel?> GetUserByEmail(string email, IHttpContextAccessor contextAccessor)
+        public async Task<bool> RegisterUser(UserRegistrationImportModel importModel)
         {
             try
             {
-                var user = await _userAdministationRepository.GetUserByEmailAsync(email);
-
-                if (user == null)
+                using (var unitOfWork = new UserUnitOfWork(_databaseContext))
                 {
-                    return null;
+                    var userEntity = importModel.ToEntity();
+
+                    if (userEntity == null || string.IsNullOrWhiteSpace(userEntity.Email))
+                    {
+                        return false;
+                    }
+
+                    var (accessRightEntities, roleEntities) = await GetUserAccessRightsAndRoles(unitOfWork, importModel.UserRole);
+
+                    var userRights = (from right in accessRightEntities
+                                      select new UserAccessRightEntity
+                                      {
+                                          UserRightId = right.Id,
+                                          UserId = userEntity.Id,
+                                          Deny = false,
+                                          Write = importModel.UserRole == UserRoleEnum.SystemAdmin || importModel.UserRole == UserRoleEnum.Admin ?
+                                          true : false,
+                                          Delete = false,
+                                          View = true,
+                                      }).ToList();
+
+                    var userRoles = (from role in roleEntities
+                                     select new UserRolesEntity
+                                     {
+                                         UserId = userEntity.UserId,
+                                         UserRolesId = role.Id,
+
+                                     }).ToList();
+
+                    unitOfWork.UserRepository.Add(userEntity);
+
+                    userRights.ForEach(r =>
+                    {
+                        unitOfWork.UserAccessRightRepository.Add(r);
+                    });
+
+                    userRoles.ForEach(r =>
+                    {
+                        unitOfWork.UserRolesRepository.Add(r);
+                    });
+
+                    await Save(_httpContextAccessor.HttpContext);
+
+                    return true;
                 }
-
-                return user.ToExportModel();
-
             }
             catch (Exception exception)
             {
                 await LogRepository.AddMessage(new LogEntity
                 {
-                    Message = $"Could not get user [{email}] from database!",
+                    Message = "Cannot register new user!",
                     ExMessage = exception.Message,
                     StackTrace = exception.StackTrace ?? string.Empty,
                     TimeStamp = DateTime.UtcNow,
                     Trigger = nameof(UserAdministrationService),
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = nameof(UserAdministrationService),
+                    CreatedBy = nameof(UserAdministrationService)
                 });
 
-                await Save(contextAccessor.HttpContext);
-
-                return null;
-            }
-        }
-
-        public async Task<bool> RegisterUser(UserRegistrationImportModel registrationModel, IHttpContextAccessor contextAccessor)
-        {
-            try
-            {
-                var succes = await _userAdministationRepository.RegisterUserAsync(registrationModel.ToEntity());
-
-                var emailHtml = await _emailClient.LoadMailHtmlFromRessources(RessourceNames.RegistrationMailBody);
-
-                if(!string.IsNullOrWhiteSpace(emailHtml))
-                {
-                    var targetUrl = $"{_config["apiBaseUrl"]}/UserRegistration/ActivateUserPerMail/{registrationModel.Email}";
-
-                    emailHtml = emailHtml.Replace("targetUrl", targetUrl);
-                }
-
-                var message = _emailClient.BuilMailMessage(registrationModel.Email, "Confirm your account!", "", emailHtml);
-
-                await _emailClient.SendMail(message);
-
-                return succes;
-                
-            }
-            catch (Exception exception)
-            {
-                await LogRepository.AddMessage(new LogEntity
-                {
-                    Message = "Userregistration failed!",
-                    ExMessage = exception.Message,
-                    StackTrace = exception.StackTrace ?? string.Empty,
-                    TimeStamp = DateTime.UtcNow,
-                    Trigger = nameof(UserAdministrationService),
-                    CreatedAt = DateTime.UtcNow,
-                    CreatedBy = nameof(UserAdministrationService),
-                });
-
-                await Save(contextAccessor.HttpContext);
+                await Save(_httpContextAccessor.HttpContext);
 
                 return false;
             }
         }
 
-        public async Task ActivateUserPerMail(string email, IHttpContextAccessor contextAccessor)
+        public async Task UpdateUser(UserEntity entityToUpdate, bool save)
         {
             try
             {
-                var user = await _userAdministationRepository.GetUserByEmailAsync(email);
+                using (var unitOfWork = new UserUnitOfWork(_databaseContext))
+                {
+                    unitOfWork.UserRepository.Update(entityToUpdate);
 
-                if (user == null) return;
-
-                user.EmailConfirmed = true;
-                user.IsActive = true;
-
-                _userAdministationRepository.UpdateUser(user);
-
-                await Save(contextAccessor.HttpContext);
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
-        public async Task<bool> ChangeActiveState(int userId, bool isActive, IHttpContextAccessor contextAccessor)
-        {
-            try
-            {
-                return await _userAdministationRepository.ChangeUserActiveStateAsync(userId, isActive);
-
+                    if (save)
+                    {
+                        await unitOfWork.UserRepository.SaveAsync();
+                    }
+                }
             }
             catch (Exception exception)
             {
                 await LogRepository.AddMessage(new LogEntity
                 {
-                    Message = $"Could not change active state of user [{userId}]!",
+                    Message = $"Cannot update user [{entityToUpdate.UserId}]!",
                     ExMessage = exception.Message,
                     StackTrace = exception.StackTrace ?? string.Empty,
                     TimeStamp = DateTime.UtcNow,
                     Trigger = nameof(UserAdministrationService),
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = nameof(UserAdministrationService),
+                    CreatedBy = nameof(UserAdministrationService)
                 });
 
-                await Save(contextAccessor.HttpContext);
-
-                return false;
+                await Save(_httpContextAccessor.HttpContext);
             }
         }
 
+        #region private members
+
+        private async Task<(List<UserRightEntity>, List<UserRoleEntity>)> GetUserAccessRightsAndRoles(UserUnitOfWork unitOfWork, UserRoleEnum userRole, List<UserRoleEnum>? roles = null)
+        {
+            switch (userRole)
+            {
+                case UserRoleEnum.SystemAdmin:
+                    return await GetAccessRightsAndRoles(unitOfWork, _sytemAdminModules, new List<UserRoleEnum> { userRole });
+                case UserRoleEnum.Admin:
+                    return await GetAccessRightsAndRoles(unitOfWork, _adminModules, new List<UserRoleEnum> { userRole });
+                case UserRoleEnum.User:
+                    return await GetAccessRightsAndRoles(unitOfWork, _defaultUserModules, new List<UserRoleEnum> { userRole });
+                default: throw new ArgumentOutOfRangeException(nameof(userRole));
+            }
+        }
+
+        private async Task<List<UserRightEntity>> GetUserRights(UserUnitOfWork unitOfWork, List<AppModuleEnum> modules)
+        {
+            return await unitOfWork.UserRightRepository.GetAllAsync(new QueryOption<UserRightEntity>
+            {
+                AsNoTracking = true,
+                WhereExpression = x => modules.Contains(x.ModuleKey)
+            });
+        }
+
+        private async Task<List<UserRoleEntity>> GetUserRoles(UserUnitOfWork unitOfWork, List<UserRoleEnum> userRoles)
+        {
+            return await unitOfWork.UserRoleRepository.GetAllAsync(new QueryOption<UserRoleEntity>
+            {
+                AsNoTracking = true,
+                WhereExpression = x => userRoles.Contains(x.RoleKey)
+            });
+        }
+
+        private async Task<(List<UserRightEntity>, List<UserRoleEntity>)> GetAccessRightsAndRoles(UserUnitOfWork unitOfWork, List<AppModuleEnum> modulesToAdd, List<UserRoleEnum> rolesToAdd)
+        {
+            var userRights = await GetUserRights(unitOfWork, modulesToAdd);
+            var userRoles = await GetUserRoles(unitOfWork, rolesToAdd);
+
+            return (userRights, userRoles);
+        }
+
+        #endregion
 
         #region dispose
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
-                    // _userAdministationRepository.Dispose();
+                    _databaseContext.Dispose();
                 }
 
                 disposedValue = true;
