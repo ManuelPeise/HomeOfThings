@@ -6,4 +6,5 @@ export enum RouteTypeEnum {
   Home = '/',
   PlayGround = '/playground',
   ExpenseOverview = '/finance/expense-overview',
+  LoggingPage = 'administration/logging',
 }

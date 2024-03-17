@@ -1,7 +1,7 @@
 import {
   IUserData,
   IUserRegistration,
-} from '../../../lib/interfaces/auth/IUserData';
+} from '../../../../lib/interfaces/auth/IUserData';
 
 export interface IFamily {
   familyId: number;

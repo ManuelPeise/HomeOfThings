@@ -1,9 +1,9 @@
 import React, { CSSProperties } from 'react';
-import { StyledList } from '../../../components/styledComponents/StyledLists';
+import { StyledList } from '../../../../components/styledComponents/StyledLists';
 import { IFamily } from '../interfaces/IFamily';
 import FamilyListItem from '../components/FamilyListItem';
-import { useStatelessApi } from '../../../hooks/api/useStatelessApi';
-import { ApiEndpointEnum } from '../../../lib/enums/ApiEndpointEnum';
+import { useStatelessApi } from '../../../../hooks/api/useStatelessApi';
+import { ApiEndpointEnum } from '../../../../lib/enums/ApiEndpointEnum';
 
 interface IProps {
   selectedSection: number;

@@ -8,7 +8,8 @@ import PageLayout from '../../components/layouts/PageLayout';
 import PlayGround from '../playground/PlayGround';
 import AccountDetailPage from '../account/AccountDetailPage';
 import { UserRoleEnum } from '../../lib/enums/UserRoleEnum';
-import SystemAdministration from '../administration/SystemAdministration';
+import FamilyAdministration from '../administration/familyAdministration/FamilyAdministration';
+import LoggingPage from '../administration/logging/LoggingPage';
 
 const AppRouter: React.FC = () => {
   const { userData, handleLogin, handleLogout } = useAuth();
@@ -32,8 +33,9 @@ const AppRouter: React.FC = () => {
             <Route path={RouteTypeEnum.Account} Component={AccountDetailPage} />
             <Route
               path={RouteTypeEnum.FamilyAdministration}
-              Component={SystemAdministration}
+              Component={FamilyAdministration}
             />
+            <Route path={RouteTypeEnum.LoggingPage} Component={LoggingPage} />
           </Route>
         </Routes>
       </BrowserRouter>

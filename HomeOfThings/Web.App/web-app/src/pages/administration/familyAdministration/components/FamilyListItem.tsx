@@ -1,8 +1,8 @@
 import React from 'react';
 import { IFamily } from '../interfaces/IFamily';
-import SingleCheckbox from '../../../components/inputs/checkBoxes/SingleCheckBox';
+import SingleCheckbox from '../../../../components/inputs/checkBoxes/SingleCheckBox';
 import { Grid, ListItem, ListItemButton, ListItemText } from '@mui/material';
-import { useI18n } from '../../../hooks/useI18n';
+import { useI18n } from '../../../../hooks/useI18n';
 
 interface IProps {
   index: number;

@@ -12,9 +12,9 @@ export const StyledList = styled(List)({
 });
 
 export const StyledListItem = styled(ListItemButton)({
+  minWidth: '500px',
   '&.MuiListItemButton-root': {
     width: '100%',
-    minWidth: '300px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -27,14 +27,18 @@ export const StyledListItem = styled(ListItemButton)({
 
 export const StyledListItemTitle = styled(ListItemText)({
   '&.MuiListItemText-root': {
-    fontSize: '1.4rem',
+    width: '100%',
+    maxWidth: '100%',
+    fontSize: '1.4em',
     color: ColorTypeEnum.Black,
   },
 });
 
 export const StyledListItemSubTitle = styled(ListItemText)({
   '&.MuiListItemText-root': {
-    fontSize: '1rem',
+    width: '100%',
+    maxWidth: '100%',
+    fontSize: '1em',
     color: ColorTypeEnum.Gray,
   },
 });

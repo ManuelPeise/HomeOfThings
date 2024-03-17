@@ -1,21 +1,32 @@
-import React from "react";
-import { IListItem } from "../../../lib/interfaces/list/IListItem";
-import { StyledListItem, StyledListItemSubTitle, StyledListItemTitle } from "../../styledComponents/StyledLists";
+import React from 'react';
+import { IListItem } from '../../../lib/interfaces/list/IListItem';
+import { ListItemButton, ListItemText } from '@mui/material';
 
-interface IProps{
-    item: IListItem
-    selectedItemId: number
-    onClick: (id: number) => void
+interface IProps {
+  item: IListItem;
+  selectedItemId: number;
+  onClick: (id: number) => void;
 }
 
-const MenuListItem: React.FC<IProps> = (props) =>{
-    const {item, selectedItemId, onClick} = props
+const MenuListItem: React.FC<IProps> = (props) => {
+  const { item, selectedItemId, onClick } = props;
 
-    return (
-        <StyledListItem selected={item.id === selectedItemId} disabled={item.id === selectedItemId} onClick={onClick.bind(null, item.id)}>
-            <StyledListItemTitle disableTypography>{item.title}</StyledListItemTitle>
-            <StyledListItemSubTitle disableTypography>{item.subTitle??""}</StyledListItemSubTitle>
-        </StyledListItem>)
-}
+  return (
+    <ListItemButton
+      style={{
+        width: '100%',
+        maxWidth: '100%',
+        padding: '16px',
+        backgroundColor: 'lightblue',
+      }}
+      selected={item.id === selectedItemId}
+      disabled={item.id === selectedItemId}
+      onClick={onClick.bind(null, item.id)}
+    >
+      <ListItemText disableTypography>{item.title}</ListItemText>
+      <ListItemText disableTypography>{item.subTitle ?? ''}</ListItemText>
+    </ListItemButton>
+  );
+};
 
-export default MenuListItem
+export default MenuListItem;

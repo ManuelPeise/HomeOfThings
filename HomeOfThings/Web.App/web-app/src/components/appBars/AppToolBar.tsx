@@ -30,7 +30,8 @@ const AppToolBar: React.FC<IProps> = (props) => {
 
   const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false);
   const [selectedItem, setSelectedItem] = React.useState<number | null>(null);
-  const { menuItems } = useSideMenu(userData, userRoles);
+  const { sideMenu } = useSideMenu(userData, userRoles);
+
   const navigate = useNavigate();
 
   const navigateToAuth = React.useCallback(() => {
@@ -103,7 +104,7 @@ const AppToolBar: React.FC<IProps> = (props) => {
               </StyledGrid>
               <StyledGrid container style={{ paddingLeft: '16px' }}>
                 <Title
-                  title={process.env.REACT_APP_TITLE ?? ''}
+                  title={sideMenu.title}
                   textColor={ColorTypeEnum.White}
                   justify="flex-start"
                   fontSize={FontSizeEnum.MD}
@@ -112,7 +113,7 @@ const AppToolBar: React.FC<IProps> = (props) => {
               </StyledGrid>
               <StyledGrid container style={{ paddingLeft: '16px' }}>
                 <Title
-                  title={process.env.REACT_APP_SUB_TITLE ?? ''}
+                  title={sideMenu.subTitle}
                   textColor={ColorTypeEnum.LightGray}
                   justify="flex-start"
                   fontSize={FontSizeEnum.SM}
@@ -129,12 +130,12 @@ const AppToolBar: React.FC<IProps> = (props) => {
               variant="middle"
             />
             <StyledDrawerList disablePadding>
-              {menuItems.map((item, index) => {
+              {sideMenu.menuItems.map((item, index) => {
                 return (
                   <CollapsibleSideMenuItem
                     id={item.key}
                     key={index}
-                    title={item.title}
+                    title={item.textAccessor(item.resourceKey)}
                     textSize={item.textSize}
                     textColor={item.textColor}
                     icon={item.icon}

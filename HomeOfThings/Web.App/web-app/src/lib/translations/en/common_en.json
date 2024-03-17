@@ -1,13 +1,25 @@
 {
+  "labelAdministration": "Administration",
   "labelAmount": "Amount",
   "labelCancel": "Cancel",
   "labelConfirmPassword": "Confirm Password",
+  "labelDelete": "Delete",
   "labelEmail": "Email",
+  "labelExceptionMessage": "Exception Message",
+  "labelFamilyAdministration": "Family Administration",
   "labelFirstName": "First name",
+  "labelId": "Id",
   "labelIsPayment": "Is Payment",
   "labelLastName": "Last name",
+  "labelLogging": "Logging",
   "labelLogin": "Login",
+  "labelMessage": "Message",
   "labelOk": "OK",
+  "labelPageTitleFamilyManagement": "Family Management",
+  "labelPageTitleLog": "Message Log",
   "labelPassword": "Password",
-  "labelRegister": "Register"
+  "labelRegister": "Register",
+  "labelStacktrace": "Stacktrace",
+  "labelTimeStamp": "TimeStamp",
+  "labelTrigger": "Trigger"
 }

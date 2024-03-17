@@ -1,15 +1,16 @@
-import React from "react";
+import React from 'react';
 import {
   StyledDrawerListItem,
   StyledDrawerListItemButton,
-} from "../../styledComponents";
-import ListItemIcon from "../listItemIcons/ListItemIcon";
-import ListItemText from "../text/ListItemText";
-import { ColorTypeEnum } from "../../../lib/enums/ColorTypeEnum";
-import { FontSizeEnum } from "../../../lib/enums/FontSizeEnum";
-import { List, ListItemIcon as Icon } from "@mui/material";
-import { ISideMenuSubItem } from "../../../lib/interfaces/menu/ISideMenuItem";
-import { useNavigate } from "react-router-dom";
+  StyledDrawerSubListItemButton,
+} from '../../styledComponents';
+import ListItemIcon from '../listItemIcons/ListItemIcon';
+import ListItemText from '../text/ListItemText';
+import { ColorTypeEnum } from '../../../lib/enums/ColorTypeEnum';
+import { FontSizeEnum } from '../../../lib/enums/FontSizeEnum';
+import { List, ListItemIcon as Icon } from '@mui/material';
+import { ISideMenuSubItem } from '../../../lib/interfaces/menu/ISideMenuItem';
+import { useNavigate } from 'react-router-dom';
 
 interface IProps {
   id: number;
@@ -71,16 +72,17 @@ const CollapsibleSideMenuItem: React.FC<IProps> = (props) => {
           {subItems.map((item, index) => {
             return (
               <StyledDrawerListItem key={index} style={{ padding: 0 }}>
-                <StyledDrawerListItemButton
+                <StyledDrawerSubListItemButton
+                  disabled={item.disabled}
                   onClick={handleOnItemClick.bind(null, item.to)}
                 >
                   <Icon />
                   <ListItemText
-                    text={item.title}
+                    text={item.textAccessor(item.resourceKey)}
                     textColor={textColor}
                     textSize={item.textSize}
                   />
-                </StyledDrawerListItemButton>
+                </StyledDrawerSubListItemButton>
               </StyledDrawerListItem>
             );
           })}

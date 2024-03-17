@@ -1,19 +1,19 @@
 import { Grid, ListItem } from '@mui/material';
 import React from 'react';
-import { StyledList } from '../../../components/styledComponents/StyledLists';
+import { StyledList } from '../../../../components/styledComponents/StyledLists';
 import { IFamilyRegistration } from '../interfaces/IFamily';
-import useFormModel from '../../../hooks/useFormModel';
-import UnderlinedTextInput from '../../../components/inputs/textBoxes/UnderlinedTextInput';
-import { useI18n } from '../../../hooks/useI18n';
-import Title from '../../../components/labels/Title';
-import { ColorTypeEnum } from '../../../lib/enums/ColorTypeEnum';
-import { IUserRegistration } from '../../../lib/interfaces/auth/IUserData';
-import DateInput from '../../../components/inputs/datePickers/DateInput';
-import FormWrapper from '../../../components/wrappers/FormWrapper';
-import { isValidEmail } from '../../../lib/validation';
-import { useStatelessApi } from '../../../hooks/api/useStatelessApi';
-import { ApiEndpointEnum } from '../../../lib/enums/ApiEndpointEnum';
-import { UserRoleEnum } from '../../../lib/enums/UserRoleEnum';
+import useFormModel from '../../../../hooks/useFormModel';
+import UnderlinedTextInput from '../../../../components/inputs/textBoxes/UnderlinedTextInput';
+import { useI18n } from '../../../../hooks/useI18n';
+import Title from '../../../../components/labels/Title';
+import { ColorTypeEnum } from '../../../../lib/enums/ColorTypeEnum';
+import { IUserRegistration } from '../../../../lib/interfaces/auth/IUserData';
+import DateInput from '../../../../components/inputs/datePickers/DateInput';
+import FormWrapper from '../../../../components/wrappers/FormWrapper';
+import { isValidEmail } from '../../../../lib/validation';
+import { useStatelessApi } from '../../../../hooks/api/useStatelessApi';
+import { ApiEndpointEnum } from '../../../../lib/enums/ApiEndpointEnum';
+import { UserRoleEnum } from '../../../../lib/enums/UserRoleEnum';
 
 interface IProps {
   selectedSection: number;

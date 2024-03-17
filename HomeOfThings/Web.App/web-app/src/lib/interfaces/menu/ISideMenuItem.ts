@@ -1,21 +1,29 @@
-import { ColorTypeEnum } from "../../enums/ColorTypeEnum"
-import { FontSizeEnum } from "../../enums/FontSizeEnum"
+import { ColorTypeEnum } from '../../enums/ColorTypeEnum';
+import { FontSizeEnum } from '../../enums/FontSizeEnum';
+import { UserRoleEnum } from '../../enums/UserRoleEnum';
 
-export interface ISideMenuItem{
-    key: number
-    sortOrder: number
-    title: string
-    textSize: FontSizeEnum
-    textColor: ColorTypeEnum
-    icon: JSX.Element
-    iconColor: ColorTypeEnum
-    disabled: boolean
-    sumItems: ISideMenuSubItem[]
-
+export interface ISideMenuConfiguration {
+  title: string;
+  subTitle: string;
+  menuItems: ISideMenuItem[];
 }
 
-export interface ISideMenuSubItem{
-    title: string
-    textSize: FontSizeEnum
-    to: string
+export interface ISideMenuItemBase {
+  key: number;
+  textSize: FontSizeEnum;
+  textColor: ColorTypeEnum;
+  resourceKey: string;
+  textAccessor: (key: string) => string;
+}
+
+export interface ISideMenuItem extends ISideMenuItemBase {
+  key: number;
+  icon: JSX.Element;
+  iconColor: ColorTypeEnum;
+  sumItems: ISideMenuSubItem[];
+}
+
+export interface ISideMenuSubItem extends ISideMenuItemBase {
+  disabled: boolean;
+  to: string;
 }

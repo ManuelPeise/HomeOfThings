@@ -1,12 +1,12 @@
 import React from 'react';
-import SettingsPageLayout from '../../components/layouts/SettingsPageLayout';
-import { useI18n } from '../../hooks/useI18n';
-import { IListItem } from '../../lib/interfaces/list/IListItem';
+import { useI18n } from '../../../hooks/useI18n';
+import { IListItem } from '../../../lib/interfaces/list/IListItem';
 import FamilyOverview from './sections/FamilyOverView';
 import AddFamilySection from './sections/AddFamilySection';
-import { StyledPaper } from '../../components/styledComponents/StyledLayout';
 
-const SystemAdministration: React.FC = () => {
+import SettingsLayout from '../../../components/layouts/SettingsLayout';
+
+const FamilyAdministration: React.FC = () => {
   const { getResource } = useI18n();
   const [selectedItem, setSelectedItem] = React.useState<number>(0);
 
@@ -22,18 +22,18 @@ const SystemAdministration: React.FC = () => {
   }, []);
 
   return (
-    <SettingsPageLayout
-      pageTitle={getResource('administration.labelFamilyAdministration')}
+    <SettingsLayout
+      pageTitle={getResource('common.labelFamilyAdministration')}
       selectedItem={selectedItem}
       listItems={listItems}
       handleItemClicked={handleSelectItem}
     >
-      <StyledPaper>
+      <>
         <FamilyOverview sectionId={0} selectedSection={selectedItem} />
         <AddFamilySection sectionId={1} selectedSection={selectedItem} />
-      </StyledPaper>
-    </SettingsPageLayout>
+      </>
+    </SettingsLayout>
   );
 };
 
-export default SystemAdministration;
+export default FamilyAdministration;

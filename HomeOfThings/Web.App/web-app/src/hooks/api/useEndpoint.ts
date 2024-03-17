@@ -26,6 +26,8 @@ export const useEndpoint = () => {
         return `${baseUrlRef.current}${ApiEndpointEnum.UpdateFamily}`;
       case ApiEndpointEnum.SaveFamily:
         return `${baseUrlRef.current}${ApiEndpointEnum.SaveFamily}`;
+      case ApiEndpointEnum.GetLogMessages:
+        return `${baseUrlRef.current}${ApiEndpointEnum.GetLogMessages}`;
       default:
         return `${baseUrlRef.current}`;
     }
