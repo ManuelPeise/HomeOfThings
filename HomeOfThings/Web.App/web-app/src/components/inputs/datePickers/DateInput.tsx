@@ -9,19 +9,22 @@ import dayjs from 'dayjs';
 
 interface IProps {
   property: string;
-  date: Date | number | null;
+  date: string;
+  minDate?: string;
   disableFuture?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
   title?: string;
   paddingRight?: number;
   paddingLeft?: number;
-  handleDateChanged: (date: Date, key: any) => void;
+
+  handleDateChanged: (date: string, key: any) => void;
 }
 
 const DateInput: React.FC<IProps> = (props) => {
   const {
     date,
+    minDate,
     property,
     disabled,
     fullWidth,
@@ -31,24 +34,6 @@ const DateInput: React.FC<IProps> = (props) => {
     paddingRight,
     handleDateChanged,
   } = props;
-
-  const convertUTCDateToLocalDate = React.useCallback((date: Date) => {
-    var newDate = new Date(
-      date.getTime() - date.getTimezoneOffset() * 60 * 1000
-    );
-    return newDate;
-  }, []);
-
-  const handleChange = React.useCallback(
-    (date: unknown) => {
-      const newDate: Date = new Date(date as number);
-
-      var localDate = convertUTCDateToLocalDate(newDate);
-
-      handleDateChanged(localDate, property);
-    },
-    [property, handleDateChanged, convertUTCDateToLocalDate]
-  );
 
   return (
     <StyledDatePickerContainer
@@ -65,11 +50,13 @@ const DateInput: React.FC<IProps> = (props) => {
         <StyledDatePicker
           disableFuture={disableFuture}
           label={title}
-          format="DD.MM.YYYY"
+          format="DD/MM/YYYY"
           slotProps={{ textField: { variant: 'standard' } }}
-          defaultValue={dayjs(new Date().toDateString())}
-          value={dayjs(date)}
-          onChange={handleChange}
+          minDate={dayjs(date)}
+          value={minDate && dayjs(minDate)}
+          onChange={(value) => {
+            handleDateChanged(value as string, property);
+          }}
         />
       </LocalizationProvider>
     </StyledDatePickerContainer>

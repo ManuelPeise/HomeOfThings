@@ -3,11 +3,6 @@ using Date.Models.Entities.Log;
 using Date.Models.Models.Administration;
 using Logic.Shared;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic.Administration
 {
@@ -34,7 +29,7 @@ namespace Logic.Administration
                             ExceptionMessage = message.ExMessage,
                             Stacktrace = message.StackTrace,
                             Trigger = message.Trigger,
-                            TimeStamp = message.TimeStamp.ToString("dd.MM.yyyy - HH:mm:ss")
+                            TimeStamp = message.TimeStamp.ToString("yyyy-MM-ddTHH:mm:ss")
                         }).ToList();
 
             }
@@ -55,18 +50,21 @@ namespace Logic.Administration
             }
         }
 
-        public async Task<bool> ThrowException()
+        public async Task<bool> DeleteMessage(int id)
         {
             try
             {
-                throw new Exception("This is a exception!");
+                LogRepository.DeleteMessage(id);
 
+                await Save(_httpContextAccessor.HttpContext);
+
+                return true;
             }
             catch (Exception exception)
             {
                 await LogRepository.AddMessage(new LogEntity
                 {
-                    Message = "Loading log messages from database failed!",
+                    Message = $"Could not delete log message [{id}] from database failed!",
                     ExMessage = exception.Message,
                     StackTrace = exception.StackTrace,
                     Trigger = nameof(MessageLogService),

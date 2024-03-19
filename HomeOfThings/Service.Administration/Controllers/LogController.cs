@@ -27,12 +27,12 @@ namespace Service.Administration.Controllers
 
         }
 
-        [HttpGet(Name = "ThrowEx")]
-        public async Task<bool> ThrowEx()
+        [HttpPost("{id}", Name = "DeleteLogMessage")]
+        public async Task<bool> DeleteLogMessage(int id)
         {
             var service = new MessageLogService(_databaseContext, _httpContextAccessor);
 
-            return await service.ThrowException();
+            return await service.DeleteMessage(id);
         }
     }
 }

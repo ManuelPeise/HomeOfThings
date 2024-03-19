@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 
 const useFormModel = <T>(
   initialState: T,
@@ -55,8 +56,8 @@ const useFormModel = <T>(
   );
 
   const handleDateChanged = React.useCallback(
-    (value: Date, property: keyof T) => {
-      const update: T = { ...model, [property]: value };
+    (value: string, property: keyof T) => {
+      const update: T = { ...model, [property]: dayjs(value) };
       setModel(update);
 
       if (validationCallBack !== undefined) {

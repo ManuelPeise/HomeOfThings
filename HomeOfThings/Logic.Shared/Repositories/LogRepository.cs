@@ -20,8 +20,6 @@ namespace Logic.Shared.Repositories
         public async Task AddMessage(LogEntity logEntity)
         {
             await _db.AddAsync(logEntity);
-
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IList<LogEntity>> GetAllAsync(System.Linq.Expressions.Expression<Func<LogEntity, bool>>? expression = null, bool asNoTracking = true)
@@ -38,6 +36,19 @@ namespace Logic.Shared.Repositories
                 await query.ToListAsync();
         }
 
+        public bool DeleteMessage(int id)
+        {
+            var entity = _context.LogTable.Find(id);
+
+            if (entity is { })
+            {
+                _context.LogTable.Remove(entity);
+
+                return true;
+            }
+
+            return false;
+        }
         #region dispose
 
         protected virtual void Dispose(bool disposing)

@@ -17,7 +17,8 @@ export const useStatelessApi = <T>() => {
       setIsLoading(true);
 
       const response = await fetch(
-        getServiceUrl(apiOptionsRef.current?.serviceUrl),
+        getServiceUrl(apiOptionsRef.current?.serviceUrl) +
+          apiOptionsRef.current.parameters,
         {
           method: 'GET',
           mode: 'cors',
@@ -31,7 +32,6 @@ export const useStatelessApi = <T>() => {
             await JSON.stringify(await res.json())
           );
 
-          console.log('obj: ', parsedObject);
           return parsedObject;
         }
 
@@ -53,14 +53,18 @@ export const useStatelessApi = <T>() => {
 
       setIsLoading(true);
 
-      await fetch(getServiceUrl(apiOptionsRef.current?.serviceUrl), {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: apiOptionsRef.current.requestOptions.body,
-      });
+      await fetch(
+        getServiceUrl(apiOptionsRef.current?.serviceUrl) +
+          apiOptionsRef.current.parameters,
+        {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: apiOptionsRef.current.requestOptions.body,
+        }
+      );
 
       setIsLoading(false);
     },
@@ -75,7 +79,8 @@ export const useStatelessApi = <T>() => {
 
       setIsLoading(true);
       const response = await fetch(
-        getServiceUrl(apiOptionsRef.current?.serviceUrl),
+        getServiceUrl(apiOptionsRef.current?.serviceUrl) +
+          apiOptionsRef.current.parameters,
         {
           method: 'POST',
           mode: 'cors',

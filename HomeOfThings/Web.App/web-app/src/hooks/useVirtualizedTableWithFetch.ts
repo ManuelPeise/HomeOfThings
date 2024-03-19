@@ -1,13 +1,42 @@
 import React from 'react';
+import { ApiEndpointEnum } from '../lib/enums/ApiEndpointEnum';
 import { TableManager } from '../lib/tableManager';
 import { TableCellTypeEnum } from '../lib/enums/TableCellTypeEnum';
+import { useStatelessApi } from './api/useStatelessApi';
 
-export const useVirtualizedTable = (tableItems: any[]) => {
-  const manager = new TableManager(60);
+export const useVirtualizedTableWithFetch = <T>(
+  endpoint: ApiEndpointEnum,
+  headerHeight: number
+) => {
+  const manager = new TableManager(headerHeight);
+
+  const apiService = useStatelessApi<T[]>().create({
+    serviceUrl: endpoint,
+    requestOptions: {
+      method: 'GET',
+      mode: 'cors',
+    },
+    parameters: '',
+  });
+
+  const [tableItems, setTableItems] = React.useState<T[]>([]);
+
+  const sendRequest = React.useCallback(async () => {
+    const response = await apiService.get();
+
+    if (response != null) {
+      setTableItems(response);
+    }
+  }, [apiService]);
+
+  React.useEffect(() => {
+    sendRequest();
+    // eslint-disable-next-line
+  }, []);
 
   const rowGetter = React.useCallback(
     (index: number): any => {
-      if (tableItems === undefined || tableItems.length === 0) {
+      if (tableItems == null || tableItems?.length === 0) {
         return null;
       }
       const item = tableItems[index];
@@ -18,8 +47,8 @@ export const useVirtualizedTable = (tableItems: any[]) => {
 
   const headerRenderer = (
     label: string,
-    hasToolTip: boolean,
     maxWidth: number,
+    hasToolTip: boolean,
     onChange: (id: number, checked: boolean) => void,
     onClick: (id: number) => void,
     align?: 'start' | 'center'
@@ -39,8 +68,8 @@ export const useVirtualizedTable = (tableItems: any[]) => {
   const labelCellRenderer = (
     value: string,
     cellType: TableCellTypeEnum,
-    hasToolTip: boolean,
     maxWidth: number,
+    hasToolTip: boolean,
     onChange: (id: number, checked: boolean) => void,
     onClick: (id: number) => void,
     align?: 'start' | 'center'
@@ -57,13 +86,35 @@ export const useVirtualizedTable = (tableItems: any[]) => {
     );
   };
 
+  const checkBoxCellRenderer = (
+    id: number,
+    value: boolean,
+    cellType: TableCellTypeEnum,
+    maxWidth: number,
+    hasToolTip: boolean,
+    onChange: (id: number, checked: boolean) => void,
+    onClick: (id: number) => void,
+    align?: 'start' | 'center'
+  ) => {
+    return manager.getCell(
+      cellType,
+      value,
+      maxWidth,
+      hasToolTip,
+      onChange,
+      onClick,
+      id ?? 0,
+      align
+    );
+  };
+
   const iconButtonRenderer = (
     id: number,
+    maxWidth: number,
+    hasToolTip: boolean,
     onChange: (id: number, checked: boolean) => void,
     onClick: (id: number) => void,
     cellType: TableCellTypeEnum,
-    hasToolTip: boolean,
-    maxWidth: number,
     align?: 'start' | 'center',
     icon?: JSX.Element
   ) => {
@@ -80,28 +131,6 @@ export const useVirtualizedTable = (tableItems: any[]) => {
     );
   };
 
-  const checkBoxCellRenderer = (
-    id: number,
-    value: boolean,
-    cellType: TableCellTypeEnum,
-    hasToolTip: boolean,
-    maxWidth: number,
-    onChange: (id: number, checked: boolean) => void,
-    onClick: (id: number) => void,
-    align?: 'start' | 'center'
-  ) => {
-    return manager.getCell(
-      cellType,
-      value,
-      maxWidth,
-      hasToolTip,
-      onChange,
-      onClick,
-      id,
-      align
-    );
-  };
-
   return {
     tableRows: tableItems,
     rowCount: tableItems?.length,
@@ -110,5 +139,6 @@ export const useVirtualizedTable = (tableItems: any[]) => {
     checkBoxCellRenderer,
     iconButtonRenderer,
     rowGetter,
+    rebind: sendRequest,
   };
 };

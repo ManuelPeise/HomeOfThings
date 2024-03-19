@@ -6,49 +6,68 @@ import { logTableConfiguration } from '../../../components/virtualized/configura
 import { useContainerDimensions } from '../../../hooks/useWindowDimensions';
 import { ColorTypeEnum } from '../../../lib/enums/ColorTypeEnum';
 import '../../../../src/virtualizeTable.css';
-import { useStatelessApi } from '../../../hooks/api/useStatelessApi';
 import { ILogMessage } from './interfaces/ILogMessage';
 import { ApiEndpointEnum } from '../../../lib/enums/ApiEndpointEnum';
+import LogTableFilterBar from './components/LogTableFilterBar';
+import { useVirtualizedTableWithFetch } from '../../../hooks/useVirtualizedTableWithFetch';
+import { getPreviousDate } from '../../../lib/utils';
+import dayjs from 'dayjs';
+import { ILogMessageFilterOptions } from './interfaces/ILogMessageFilterOptions';
+import { IDropdownItem } from '../../../lib/interfaces/IDropdownItem';
+import { useStatelessApi } from '../../../hooks/api/useStatelessApi';
+
 interface IProps {}
 
 const LoggingPage: React.FC<IProps> = (props) => {
   const { getResource } = useI18n();
   const tableContainerRef = React.useRef<HTMLDivElement | null>(null);
+
+  const deleteLogRowApi = useStatelessApi<boolean>().create({
+    serviceUrl: ApiEndpointEnum.PostDeleteLogMessage,
+    requestOptions: {},
+    parameters: '',
+  });
+
   const { width, height } = useContainerDimensions(
     tableContainerRef,
     window.screen.width * 0.9,
     400
   );
-  const [logMessages, setLogMessages] = React.useState<ILogMessage[]>([]);
 
-  const logApi = useStatelessApi<ILogMessage[]>().create({
-    serviceUrl: ApiEndpointEnum.GetLogMessages,
-    requestOptions: {
-      method: 'GET',
-      mode: 'cors',
-    },
-    parameters: '',
-  });
+  const { tableRows, rebind } = useVirtualizedTableWithFetch<ILogMessage>(
+    ApiEndpointEnum.GetLogMessages,
+    60
+  );
 
-  const sendRequest = React.useCallback(async () => {
-    const response = await logApi.get({
-      serviceUrl: ApiEndpointEnum.GetLogMessages,
-      requestOptions: {
-        method: 'GET',
-        mode: 'cors',
-      },
-      parameters: '',
+  const [filterOptions, setFilterOptions] =
+    React.useState<ILogMessageFilterOptions>({
+      from: getPreviousDate(new Date(), 7).toString(),
+      to: new Date().toString(),
+      selectedItem: 0,
+      triggerItems: [],
     });
-    if (response != null) {
-      setLogMessages(response);
-    }
-  }, [logApi]);
 
   React.useEffect(() => {
-    sendRequest();
-    // eslint-disable-next-line
-  }, []);
-  // add filter bar
+    const items: IDropdownItem[] = [];
+
+    items.push({
+      id: 0,
+      value: getResource('common.labelAll'),
+      disabled: false,
+    });
+
+    tableRows.forEach((row, index) => {
+      if (items.findIndex((x) => x.value === row.trigger) === -1) {
+        items.push({
+          id: index + 1,
+          value: row.trigger,
+          disabled: false,
+        });
+      }
+    });
+    setFilterOptions({ ...filterOptions, triggerItems: items });
+  }, [tableRows, filterOptions, getResource]);
+
   const tableConfig = React.useMemo(() => {
     return logTableConfiguration;
   }, []);
@@ -56,6 +75,7 @@ const LoggingPage: React.FC<IProps> = (props) => {
   const { tableHeight, tableWidth } = React.useMemo(() => {
     let tableWidth = 0;
     let tableHeight = 0;
+
     if (width !== undefined && height !== undefined) {
       tableHeight = height - 100;
 
@@ -66,6 +86,80 @@ const LoggingPage: React.FC<IProps> = (props) => {
 
     return { tableHeight, tableWidth };
   }, [tableConfig, width, height]);
+
+  const filteredTableRows = React.useMemo((): ILogMessage[] => {
+    let items: ILogMessage[] = [];
+
+    if (tableRows.length < 1) {
+      return items;
+    }
+
+    if (filterOptions != null && tableRows?.length > 0) {
+      const fromDate = dayjs(filterOptions.from).subtract(1, 'day');
+      const toDate = dayjs(filterOptions.to).add(1, 'day');
+      items = tableRows.filter(
+        (row) =>
+          dayjs(row.timeStamp).isAfter(fromDate) &&
+          dayjs(row.timeStamp).isBefore(toDate)
+      );
+    }
+
+    if (filterOptions.selectedItem !== 0) {
+      items = items.filter(
+        (item) =>
+          item.trigger ===
+          filterOptions.triggerItems[filterOptions.selectedItem].value
+      );
+    }
+
+    return items;
+  }, [filterOptions, tableRows]);
+
+  const handleFromDateChanged = React.useCallback(
+    (date: string, key: any) => {
+      console.log(date);
+      setFilterOptions({ ...filterOptions, from: date });
+    },
+    [filterOptions]
+  );
+
+  const handleToDateChanged = React.useCallback(
+    (date: string, key: any) => {
+      setFilterOptions({
+        ...filterOptions,
+        to: date,
+      });
+    },
+    [filterOptions]
+  );
+
+  const handleTriggerChanged = React.useCallback(
+    (id: number, key: any) => {
+      setFilterOptions({
+        ...filterOptions,
+        selectedItem: id,
+      });
+    },
+    [filterOptions]
+  );
+
+  const handleDeleteRow = React.useCallback(
+    async (id: number) => {
+      if (
+        await deleteLogRowApi.postWithContent({
+          serviceUrl: ApiEndpointEnum.PostDeleteLogMessage,
+          requestOptions: {
+            method: 'POST',
+            mode: 'cors',
+          },
+          parameters: `${id}`,
+        })
+      ) {
+        await rebind();
+      }
+    },
+    [deleteLogRowApi, rebind]
+  );
 
   const tableStyle: CSSProperties = {
     border: `2px solid ${ColorTypeEnum.LightBlue}`,
@@ -80,7 +174,14 @@ const LoggingPage: React.FC<IProps> = (props) => {
   return (
     <TableLayout
       pageTitle={getResource('common.labelPageTitleLog')}
-      toolBar={<div key="test">ToolBar</div>}
+      toolBar={
+        <LogTableFilterBar
+          filterOptions={filterOptions}
+          handleFromDateChanged={handleFromDateChanged}
+          handleToDateChanged={handleToDateChanged}
+          handleTriggerChanged={handleTriggerChanged}
+        />
+      }
     >
       <div
         ref={tableContainerRef}
@@ -100,8 +201,10 @@ const LoggingPage: React.FC<IProps> = (props) => {
           headerStyle={tableHeaderStyle}
           rowHeight={30}
           headerHeight={60}
-          tableRowModels={logMessages}
+          tableRowModels={filteredTableRows}
           tableConfiguration={tableConfig}
+          noContentLabel={getResource('administration.labelNoLogMessages')}
+          onIconClick={handleDeleteRow}
         />
       </div>
     </TableLayout>

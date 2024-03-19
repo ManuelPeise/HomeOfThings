@@ -10,5 +10,7 @@
   "labelFamilyName": "Family Name",
   "labelFirstName": "First Name",
   "labelLastName": "Last Name",
-  "labelOverview": "Overview"
+  "labelNoLogMessages": "There are currently no log messages available!",
+  "labelOverview": "Overview",
+  "labelTrigger": "Trigger"
 }

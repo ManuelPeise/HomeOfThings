@@ -233,7 +233,7 @@ const AddFamilySection: React.FC<IProps> = (props) => {
                 fullWidth
                 disableFuture
                 paddingRight={20}
-                date={null}
+                date={''}
                 handleDateChanged={userForm.handleDateChanged}
               />
             </Grid>

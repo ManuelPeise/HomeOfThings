@@ -9,5 +9,6 @@ namespace Data.Interfaces.Interfaces.Repositories
         Task<IList<LogEntity>> GetAllAsync(
          Expression<Func<LogEntity, bool>>? expression = null, bool asNoTracking = true);
         Task AddMessage(LogEntity logEntity);
+        bool DeleteMessage(int id);
     }
 }

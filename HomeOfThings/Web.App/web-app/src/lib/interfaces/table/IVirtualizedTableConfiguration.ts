@@ -7,4 +7,6 @@ export interface IVirtualizedTableConfiguration {
   percentageWidth: number;
   align?: 'center' | 'start';
   cellType: TableCellTypeEnum;
+  maxWidth: number;
+  hasToolTip: boolean;
 }

@@ -5,6 +5,8 @@ import { IVirtualizedTableConfiguration } from '../../../lib/interfaces/table/IV
 import 'react-virtualized/styles.css';
 import { useI18n } from '../../../hooks/useI18n';
 import { TableCellTypeEnum } from '../../../lib/enums/TableCellTypeEnum';
+import NoContentPlaceholder from './NoContentPlaceholder';
+import { DeleteForever } from '@mui/icons-material';
 
 interface IVirtualizedTableDataBase {
   rowHeight: number;
@@ -13,6 +15,7 @@ interface IVirtualizedTableDataBase {
   tableHeight: number;
   tableConfiguration: IVirtualizedTableConfiguration[];
   onChange?: (id: number, checked: boolean) => void;
+  onIconClick?: (id: number) => Promise<void>;
 }
 
 interface IProps extends IVirtualizedTableDataBase {
@@ -20,6 +23,7 @@ interface IProps extends IVirtualizedTableDataBase {
   headerStyle?: CSSProperties;
   rowStyle?: any;
   tableRowModels: any[];
+  noContentLabel: string;
 }
 
 const VirtualizedTable: React.FC<IProps> = (props) => {
@@ -32,7 +36,9 @@ const VirtualizedTable: React.FC<IProps> = (props) => {
     headerStyle,
     rowStyle,
     tableRowModels,
+    noContentLabel,
     onChange,
+    onIconClick,
   } = props;
 
   const { getResource } = useI18n();
@@ -41,6 +47,7 @@ const VirtualizedTable: React.FC<IProps> = (props) => {
     rowCount,
     labelCellRenderer,
     checkBoxCellRenderer,
+    iconButtonRenderer,
     headerRenderer,
     rowGetter,
   } = useVirtualizedTable(tableRowModels);
@@ -52,6 +59,68 @@ const VirtualizedTable: React.FC<IProps> = (props) => {
     [onChange]
   );
 
+  const handleDeleteClick = React.useCallback(
+    async (id: number) => {
+      onIconClick && (await onIconClick(id));
+    },
+    [onIconClick]
+  );
+
+  const getCellRenderer = React.useCallback(
+    (
+      id: number,
+      type: TableCellTypeEnum,
+      maxWidth: number,
+      hasToolTip: boolean,
+      align?: 'start' | 'center',
+      cellData?: any,
+      rowIndex?: number
+    ) => {
+      switch (type) {
+        case TableCellTypeEnum.Label:
+          return labelCellRenderer(
+            cellData as string,
+            type,
+            hasToolTip,
+            maxWidth,
+            handleCheckedChanged,
+            handleDeleteClick,
+            align
+          );
+        case TableCellTypeEnum.CheckBox:
+          return checkBoxCellRenderer(
+            rowIndex ?? -1,
+            cellData as boolean,
+            type,
+            hasToolTip,
+            maxWidth,
+            handleCheckedChanged,
+            handleDeleteClick,
+            align
+          );
+        case TableCellTypeEnum.Icon:
+          return iconButtonRenderer(
+            tableRowModels[id].id,
+            handleCheckedChanged,
+            handleDeleteClick,
+            type,
+            hasToolTip,
+            maxWidth,
+            align,
+            <DeleteForever />
+          );
+      }
+    },
+    [
+      tableRowModels,
+      labelCellRenderer,
+      iconButtonRenderer,
+      checkBoxCellRenderer,
+      handleCheckedChanged,
+      handleDeleteClick,
+    ]
+  );
+
   return (
     <Table
       style={tableStyle}
@@ -59,9 +128,7 @@ const VirtualizedTable: React.FC<IProps> = (props) => {
       rowGetter={(x) => rowGetter(x.index)}
       rowStyle={rowStyle}
       headerStyle={{ ...headerStyle, margin: 0, padding: 0 }}
-      noRowsRenderer={() => {
-        return <div>No Rows Available</div>;
-      }}
+      noRowsRenderer={() => <NoContentPlaceholder label={noContentLabel} />}
       height={tableHeight}
       width={tableWidth}
       headerHeight={headerHeight}
@@ -75,25 +142,23 @@ const VirtualizedTable: React.FC<IProps> = (props) => {
           headerRenderer={(props) =>
             headerRenderer(
               getResource(`common.${props.label}`),
+              true,
+              col.maxWidth,
               handleCheckedChanged,
+              () => {},
               col.align
             )
           }
           cellRenderer={(props) =>
-            col.cellType === TableCellTypeEnum.Label
-              ? labelCellRenderer(
-                  props.cellData as string,
-                  col.cellType,
-                  handleCheckedChanged,
-                  col.align
-                )
-              : checkBoxCellRenderer(
-                  props.rowIndex,
-                  props.cellData as boolean,
-                  col.cellType,
-                  handleCheckedChanged,
-                  col.align
-                )
+            getCellRenderer(
+              props.rowIndex,
+              col.cellType,
+              col.maxWidth,
+              col.hasToolTip,
+              col.align,
+              props.cellData,
+              props.rowIndex
+            )
           }
           label={col.label}
           width={tableWidth * col.percentageWidth}

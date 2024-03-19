@@ -7,4 +7,5 @@ export enum ApiEndpointEnum {
   UpdateFamily = 'FamilyAdministration/UpdateFamily',
   ImportBudgetAccountDepartment = 'BudgetAccounting/ImportAccountDepartment',
   GetLogMessages = 'Log/GetLogMessages',
+  PostDeleteLogMessage = 'Log/DeleteLogMessage',
 }
